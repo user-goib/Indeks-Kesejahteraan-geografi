@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indeks Kesejahteraan Penduduk Indonesia — Proyek Kelompok 03 XII IPS Almusdariyah</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --white:#ffffff; --bg-subtle:#fafafa; --gray-50:#f9fafb; --gray-100:#f3f4f6;
+    --gray-200:#e5e7eb; --gray-300:#d1d5db; --gray-400:#9ca3af; --gray-500:#6b7280;
+    --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937; --gray-900:#111827;
+    --ink:#111827; --ink-soft:#374151; --muted:#6b7280; --faint:#9ca3af;
+    --border:#e5e7eb; --border-strong:#d1d5db;
+    --correct:#166534; --correct-bg:#f0fdf4; --wrong:#991b1b; --wrong-bg:#fef2f2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--white);color:var(--ink);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+  .mono{font-family:'JetBrains Mono',monospace;font-feature-settings:"tnum"}
+
+  /* NAVBAR */
+  nav.main-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--gray-800);border-bottom:1px solid var(--gray-700);transition:transform .3s ease}
+  nav.main-nav.hidden{transform:translateY(-100%)}
+  .nav-inner{max-width:1200px;margin:0 auto;padding:12px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .nav-brand{font-size:15px;font-weight:600;color:#fff;text-decoration:none;letter-spacing:-.01em;display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .nav-brand svg{width:18px;height:18px;color:var(--gray-400)}
+  .nav-view-switch{display:flex;gap:2px;background:rgba(255,255,255,0.06);border-radius:6px;padding:3px}
+  .view-btn{background:transparent;border:none;color:var(--gray-300);font-family:inherit;font-size:13px;font-weight:500;padding:7px 14px;border-radius:4px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:7px;white-space:nowrap}
+  .view-btn svg{width:14px;height:14px}
+  .view-btn:hover{color:#fff;background:rgba(255,255,255,0.06)}
+  .view-btn.active{background:#fff;color:var(--gray-800);font-weight:600}
+  .view-btn.active svg{color:var(--gray-800)}
+  @media (max-width:860px){.view-btn span{display:none}.view-btn{padding:8px 12px}.nav-inner{padding:12px 20px}}
+
+  .view{display:none;animation:viewIn .4s ease}
+  .view.active{display:block}
+  @keyframes viewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 32px}
+  .wrap-wide{max-width:1120px;margin:0 auto;padding:0 32px}
+  .wrap-mid{max-width:960px;margin:0 auto;padding:0 32px}
+  section.block{padding:96px 0;border-bottom:1px solid var(--border)}
+  section.block:last-of-type{border-bottom:none}
+  section.block.alt{background:var(--bg-subtle)}
+  @media (max-width:720px){section.block{padding:64px 0}.wrap,.wrap-wide,.wrap-mid{padding:0 20px}}
+
+  /* HERO */
+  .hero{padding:130px 0 220px;background:var(--gray-800);position:relative;overflow:hidden;color:#fff}
+  .hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,1) 0%,rgba(0,0,0,1) 35%,rgba(0,0,0,0) 75%);mask-image:linear-gradient(180deg,rgba(0,0,0,1) 0%,rgba(0,0,0,1) 35%,rgba(0,0,0,0) 75%)}
+  .hero::after{content:'';position:absolute;top:-120px;right:-120px;width:480px;height:480px;background:radial-gradient(circle,rgba(255,255,255,0.06) 0%,transparent 65%);pointer-events:none}
+  .hero-fade{position:absolute;bottom:0;left:0;right:0;height:300px;background:linear-gradient(180deg,transparent 0%,rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.4) 55%,rgba(255,255,255,0.85) 80%,#ffffff 100%);pointer-events:none;z-index:1}
+  .hero .wrap{position:relative;z-index:2}
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:500;color:#d1d5db;padding:5px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;margin-bottom:16px;background:rgba(255,255,255,0.05);letter-spacing:.04em;text-transform:uppercase;backdrop-filter:blur(6px)}
+  .hero-tag svg{width:13px;height:13px;color:#9ca3af}
+  .hero-label{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:500;color:#d1d5db;padding:6px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;margin-bottom:24px;background:rgba(255,255,255,0.05);backdrop-filter:blur(6px)}
+  .hero-label svg{width:14px;height:14px;color:#9ca3af}
+  .hero h1{font-size:clamp(34px,5.5vw,64px);font-weight:700;line-height:1.05;letter-spacing:-.035em;margin-bottom:20px;color:#fff;max-width:820px}
+  .hero h1 .accent{color:#9ca3af}
+  .hero .lede{font-size:17px;color:#9ca3af;max-width:640px;line-height:1.65;margin-bottom:48px}
+  .hero-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:680px}
+  @media (max-width:600px){.hero-stats{grid-template-columns:1fr}}
+  .stat{padding:20px 22px;background:var(--white);border:1px solid rgba(0,0,0,0.06);border-radius:6px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px -12px rgba(0,0,0,.35);transition:transform .25s,box-shadow .25s}
+  .stat:hover{transform:translateY(-2px);box-shadow:0 1px 2px rgba(0,0,0,.04),0 16px 40px -12px rgba(0,0,0,.4)}
+  .stat-label{font-size:11.5px;color:var(--muted);font-weight:500;margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase}
+  .stat-value{font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1;font-family:'JetBrains Mono',monospace}
+  .stat-value .unit{font-size:13px;color:var(--muted);font-weight:500;margin-left:4px}
+
+  /* SECTION HEADER */
+  .section-head{margin-bottom:40px}
+  .section-num{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-weight:500;margin-bottom:12px;letter-spacing:.02em;text-transform:uppercase}
+  .section-num svg{width:14px;height:14px;color:var(--gray-400)}
+  .section-title{font-size:clamp(26px,3.4vw,34px);font-weight:700;line-height:1.2;letter-spacing:-.025em;color:var(--ink);margin-bottom:12px}
+  .section-desc{font-size:16px;color:var(--muted);max-width:620px;line-height:1.6}
+  .prose p{font-size:16.5px;color:var(--ink-soft);line-height:1.75;margin-bottom:16px}
+  .prose p:last-child{margin-bottom:0}
+  .prose b{color:var(--ink);font-weight:600}
+
+  /* OVERVIEW */
+  .overview-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
+  @media (max-width:720px){.overview-grid{grid-template-columns:1fr}}
+  .overview-card{display:flex;align-items:flex-start;gap:18px;padding:22px 24px;background:var(--white);border:1px solid var(--border);border-radius:6px;text-decoration:none;color:inherit;transition:all .2s;position:relative;cursor:pointer}
+  .overview-card:hover{border-color:var(--gray-500);transform:translateY(-2px);box-shadow:0 8px 24px -10px rgba(0,0,0,.12)}
+  .ov-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--faint);flex-shrink:0;margin-top:2px;transition:color .2s}
+  .overview-card:hover .ov-num{color:var(--gray-800)}
+  .ov-body{flex:1}
+  .ov-body h3{font-size:15.5px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:-.01em}
+  .ov-body p{font-size:13.5px;color:var(--muted);line-height:1.55}
+  .ov-arrow{width:16px;height:16px;color:var(--faint);flex-shrink:0;margin-top:4px;transition:transform .2s,color .2s}
+  .overview-card:hover .ov-arrow{transform:translateX(3px);color:var(--gray-800)}
+
+  /* ASPECTS */
+  .aspects{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:32px}
+  @media (max-width:640px){.aspects{grid-template-columns:1fr}}
+  .aspect{padding:22px;background:var(--white);transition:background .15s}
+  .aspect:hover{background:var(--bg-subtle)}
+  .aspect-icon{width:20px;height:20px;color:var(--gray-600);margin-bottom:14px}
+  .aspect h3{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--ink);letter-spacing:-.01em}
+  .aspect p{font-size:13.5px;color:var(--muted);line-height:1.6}
+
+  .callout{margin-top:28px;padding:16px 20px;background:var(--gray-50);border:1px solid var(--border);border-left:3px solid var(--gray-800);border-radius:4px;display:flex;gap:14px;align-items:flex-start}
+  .callout-icon{flex-shrink:0;width:18px;height:18px;color:var(--gray-700);margin-top:3px}
+  .callout p{font-size:14px;color:var(--ink-soft);line-height:1.65}
+  .callout b{color:var(--ink);font-weight:600}
+
+  /* TABS */
+  .tabs-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:20px}
+  .tab-btn{background:var(--white);border:1px solid var(--border);padding:7px 12px;border-radius:4px;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s}
+  .tab-btn:hover{color:var(--ink);border-color:var(--border-strong);background:var(--gray-50)}
+  .tab-btn.active{background:var(--gray-800);color:#fff;border-color:var(--gray-800)}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .tab-body{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:24px 26px}
+  @media (max-width:600px){.tab-body{padding:20px}}
+  .tab-body h3{font-size:17px;font-weight:700;margin-bottom:4px;color:var(--ink);letter-spacing:-.015em}
+  .tab-body .sub{font-size:13.5px;color:var(--muted);margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .tab-body ul{list-style:none}
+  .tab-body li{padding:11px 0;font-size:14px;color:var(--ink-soft);line-height:1.6;display:flex;gap:14px;border-bottom:1px solid var(--border)}
+  .tab-body li:last-child{border-bottom:none}
+  .tab-body li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--gray-500);flex-shrink:0;margin-top:9px}
+  .tab-body li b{color:var(--ink);font-weight:600}
+
+  /* FAKTOR */
+  .faktor-list{display:grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:16px}
+  .faktor{background:var(--white);cursor:pointer;transition:background .15s}
+  .faktor:hover{background:var(--bg-subtle)}
+  .faktor.open{background:var(--gray-50)}
+  .faktor-header{padding:16px 20px;display:flex;align-items:center;gap:16px}
+  .faktor-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;color:var(--faint);width:24px;flex-shrink:0}
+  .faktor.open .faktor-num{color:var(--gray-800)}
+  .faktor-title{flex:1}
+  .faktor-title h3{font-size:14.5px;font-weight:600;color:var(--ink);margin-bottom:2px;letter-spacing:-.01em}
+  .faktor-title .sub{font-size:12.5px;color:var(--muted);font-weight:400}
+  .faktor-icon{width:16px;height:16px;color:var(--gray-500);transition:transform .25s,color .25s;flex-shrink:0}
+  .faktor.open .faktor-icon{transform:rotate(180deg);color:var(--gray-800)}
+  .faktor-body{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 20px;margin-left:40px;color:var(--muted);font-size:13.5px;line-height:1.7}
+  .faktor.open .faktor-body{max-height:220px;padding-bottom:18px}
+
+  /* CHARTS */
+  .charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+  @media (max-width:720px){.charts{grid-template-columns:1fr}}
+  .chart-box{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:20px}
+  .chart-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;gap:12px}
+  .chart-box h4{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:2px;letter-spacing:-.01em}
+  .chart-box .src{font-size:11px;color:var(--faint);font-family:'JetBrains Mono',monospace}
+  .chart-canvas{height:200px;position:relative}
+
+  /* TABLE */
+  .table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:6px;background:var(--white);margin-bottom:24px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  table th{text-align:left;padding:12px 16px;border-bottom:1px solid var(--border);font-weight:600;color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--gray-50);text-transform:uppercase;letter-spacing:.03em}
+  table td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--ink-soft);font-family:'JetBrains Mono',monospace;font-size:13px}
+  table tr:last-child td{border-bottom:none}
+  table tr:hover td{background:var(--gray-50)}
+  table .val{color:var(--ink);font-weight:600}
+  table .up{color:var(--gray-800);font-weight:500}
+  table .flat{color:var(--faint)}
+
+  /* GAME */
+  .game{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:32px;margin-top:16px}
+  @media (max-width:600px){.game{padding:24px 20px}}
+  .game-head{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+  .game-head h3{font-size:18px;font-weight:700;margin-bottom:4px;letter-spacing:-.015em;color:var(--ink)}
+  .game-head p{font-size:14px;color:var(--muted);line-height:1.6}
+  .sliders{display:grid;grid-template-columns:1fr 1fr;gap:20px 32px;margin-bottom:28px}
+  @media (max-width:600px){.sliders{grid-template-columns:1fr}}
+  .slider-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+  .slider-head label{font-size:13.5px;color:var(--ink-soft);font-weight:500}
+  .slider-head .v{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;color:var(--ink);transition:color .2s}
+  .slider.ideal .slider-head .v{color:var(--gray-800)}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--border-strong);outline:none;cursor:pointer;border-radius:2px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--gray-800);border-radius:50%;cursor:pointer;transition:transform .15s,background .15s;border:2px solid var(--white);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+  input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15);background:var(--gray-900)}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--gray-800);border-radius:50%;cursor:pointer;border:2px solid var(--white);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+  .score{padding:24px 0 8px;border-top:1px solid var(--border);display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:24px}
+  .score-left .lbl{font-size:11.5px;color:var(--faint);font-family:'JetBrains Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+  .score-left .total{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted)}
+  .score-left .total b{color:var(--ink);font-weight:700;font-size:20px}
+  .score-right{text-align:right}
+  .score-right .lbl{font-size:11.5px;color:var(--faint);font-family:'JetBrains Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+  .score-right .big{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;line-height:.95;color:var(--gray-800);letter-spacing:-.03em}
+  .score-right .msg{font-size:13.5px;color:var(--muted);margin-top:10px;line-height:1.5;max-width:320px;font-weight:500}
+  .score-tip{margin-top:18px;font-size:12px;color:var(--faint);text-align:center;font-family:'JetBrains Mono',monospace}
+  .btn-row{margin-top:22px;text-align:center}
+  .btn-text{background:var(--white);border:1px solid var(--border-strong);border-radius:4px;font-family:inherit;font-size:13px;font-weight:500;color:var(--ink-soft);cursor:pointer;padding:9px 18px;transition:all .15s}
+  .btn-text:hover{color:#fff;border-color:var(--gray-800);background:var(--gray-800)}
+
+  /* QUIZ */
+  .quiz{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:32px;margin-top:16px}
+  @media (max-width:600px){.quiz{padding:24px 20px}}
+  .quiz-progress{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+  .quiz-progress .counter{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.05em}
+  .quiz-progress .counter b{color:var(--ink)}
+  .quiz-score-mini{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);font-weight:500}
+  .quiz-score-mini b{color:var(--ink)}
+  .progress-track{display:flex;gap:4px;margin-bottom:28px}
+  .progress-seg{flex:1;height:3px;background:var(--border);border-radius:2px;transition:background .3s}
+  .progress-seg.done{background:var(--gray-800)}
+  .progress-seg.current{background:var(--gray-500)}
+  .quiz-question{font-size:17px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:24px;letter-spacing:-.015em}
+  .quiz-question .qnum{display:block;font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:500;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+  .quiz-options{display:grid;gap:8px;margin-bottom:24px}
+  .option{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--white);border:1px solid var(--border);border-radius:4px;cursor:pointer;transition:all .15s;font-family:inherit;font-size:14.5px;color:var(--ink-soft);text-align:left;line-height:1.55}
+  .option:hover:not(:disabled){border-color:var(--gray-500);background:var(--gray-50)}
+  .option:disabled{cursor:default}
+  .option .key{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:var(--gray-100);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;color:var(--gray-600);flex-shrink:0;transition:all .15s}
+  .option.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct)}
+  .option.correct .key{background:var(--correct);color:#fff}
+  .option.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong)}
+  .option.wrong .key{background:var(--wrong);color:#fff}
+  .option.disabled-dim{opacity:.55}
+  .quiz-feedback{display:none;padding:14px 18px;border-radius:4px;font-size:13.5px;line-height:1.6;margin-bottom:20px;border-left:3px solid}
+  .quiz-feedback.show{display:block;animation:fade .3s}
+  .quiz-feedback.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct)}
+  .quiz-feedback.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong)}
+  .quiz-feedback b{font-weight:700}
+  .quiz-actions{display:flex;justify-content:flex-end}
+  .btn-primary{background:var(--gray-800);color:#fff;border:1px solid var(--gray-800);border-radius:4px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;padding:10px 20px;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+  .btn-primary:hover{background:var(--gray-900);border-color:var(--gray-900)}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+  .btn-primary svg{width:14px;height:14px}
+  .quiz-result{display:none;text-align:center;padding:32px 20px}
+  .quiz-result.show{display:block;animation:fade .4s}
+  .quiz-result .icon-wrap{width:56px;height:56px;background:var(--gray-100);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px}
+  .quiz-result .icon-wrap svg{width:26px;height:26px;color:var(--gray-700)}
+  .quiz-result h3{font-size:22px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:-.02em}
+  .quiz-result .final-score{font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:700;color:var(--gray-800);letter-spacing:-.03em;line-height:1;margin:16px 0 8px}
+  .quiz-result .final-score .of{font-size:20px;color:var(--faint);font-weight:500}
+  .quiz-result .verdict{font-size:15px;color:var(--muted);margin-bottom:28px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+  /* TEAM */
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:8px}
+  @media (max-width:720px){.team-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:460px){.team-grid{grid-template-columns:1fr}}
+
+  .team-member{
+    background:var(--white);
+    padding:28px 24px;
+    text-align:center;
+    transition:background .2s;
+    position:relative;
+  }
+  .team-member:hover{background:var(--bg-subtle)}
+
+  /* Circular photo avatar */
+  .avatar{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  background:var(--gray-800);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:20px;
+  font-weight:600;
+  margin:0 auto 16px;
+  letter-spacing:.02em;
+  overflow:hidden;
+  position:relative;
+  border:none;
+  box-shadow:
+    0 0 0 2px var(--white),
+    0 0 0 3px var(--border),
+    0 6px 18px -6px rgba(0,0,0,.25);
+  transition:transform .25s ease, box-shadow .25s ease;
+  transform:translateZ(0);
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+  -webkit-mask-image:-webkit-radial-gradient(white, black);
+  mask-image:radial-gradient(white, black);
+}
+.team-member:hover .avatar{
+  transform:translateY(-2px) translateZ(0);
+  box-shadow:
+    0 0 0 2px var(--white),
+    0 0 0 3px var(--border-strong),
+    0 10px 24px -8px rgba(0,0,0,.3);
+}
+.avatar{
+  width:76px;
+  height:76px;
+  border-radius:50%;
+  background:var(--gray-800);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:20px;
+  font-weight:600;
+  margin:0 auto 16px;
+  letter-spacing:.02em;
+  position:relative;
+  border:none;
+  box-shadow:
+    0 0 0 2px var(--white),
+    0 0 0 3px var(--border),
+    0 6px 18px -6px rgba(0,0,0,.25);
+  transition:transform .25s ease, box-shadow .25s ease;
+  transform:translateZ(0);
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+  isolation:isolate;
+  }
+  .team-member:hover .avatar{
+  transform:translateY(-2px) translateZ(0);
+  box-shadow:
+    0 0 0 2px var(--white),
+    0 0 0 3px var(--border-strong),
+    0 10px 24px -8px rgba(0,0,0,.3);
+  }
+/* Wrapper dalam untuk clip foto bulat */
+  .avatar::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:3;
+  /* Ring tipis super halus via inset shadow, bukan border */
+  box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.06);
+  }
+  .avatar .fallback{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg, var(--gray-700), var(--gray-900));
+  color:#fff;
+  font-family:'JetBrains Mono',monospace;
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:.02em;
+  z-index:1;
+  border-radius:50%;
+  }
+  .team-member:hover .avatar{
+    transform:translateY(-2px);
+    box-shadow:0 0 0 1px var(--border-strong), 0 10px 24px -8px rgba(0,0,0,.25);
+  }
+  .avatar img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  z-index:2;
+  border-radius:50%;
+  /* Clip-path bikin edge lebih halus dari overflow:hidden saja */
+  -webkit-clip-path:circle(50%);
+  clip-path:circle(50%);
+  transform:translateZ(0) scale(1.001); /* scale super tipis untuk hindari gap */
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+  /* Ini kuncinya: blur super halus untuk anti-aliasing manual */
+  -webkit-font-smoothing:antialiased;
+  filter: blur(0.2px);
+  }
+  .avatar .fallback{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg, var(--gray-700), var(--gray-900));
+  color:#fff;
+  font-family:'JetBrains Mono',monospace;
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:.02em;
+  z-index:1;
+  border-radius:50%;
+  -webkit-clip-path:circle(50%);
+  clip-path:circle(50%);
+  }
+
+  .team-member h4{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:-.01em}
+  .team-member .role{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.03em}
+
+  .project-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:32px;padding-top:32px;border-top:1px solid var(--border)}
+  .meta-item .meta-label{font-size:11.5px;color:var(--faint);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+  .meta-item .meta-value{font-size:14px;color:var(--ink);font-weight:500}
+
+  /* FOOTER */
+  footer{background:var(--gray-800);color:var(--gray-300);padding:40px 0}
+  footer .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;font-size:13px}
+  footer .brand{font-size:14px;font-weight:600;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px;letter-spacing:-.01em}
+  footer .brand svg{width:16px;height:16px;color:var(--gray-400)}
+  footer .right{text-align:right;color:var(--gray-400)}
+  @media (max-width:600px){footer .right{text-align:left}}
+
+  /* RANGKUMAN */
+  .summary-hero{padding:130px 0 60px;background:var(--gray-800);color:#fff;position:relative;overflow:hidden}
+  .summary-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
+  .summary-hero-inner{position:relative;z-index:2;max-width:760px;margin:0 auto;padding:0 32px}
+  .summary-badge{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;color:#d1d5db;padding:5px 12px;border:1px solid rgba(255,255,255,.14);border-radius:4px;margin-bottom:20px;background:rgba(255,255,255,.05);letter-spacing:.04em;text-transform:uppercase}
+  .summary-badge svg{width:13px;height:13px}
+  .summary-hero h1{font-size:clamp(30px,4.5vw,44px);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:14px}
+  .summary-hero p{font-size:16px;color:#9ca3af;max-width:600px;line-height:1.6;margin-bottom:24px}
+  .summary-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .btn-white{background:#fff;color:var(--gray-800);border:1px solid #fff;border-radius:4px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:10px 18px;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+  .btn-white:hover{background:var(--gray-100)}
+  .btn-white svg{width:14px;height:14px}
+
+  .summary-content{padding:72px 0}
+  .summary-section{margin-bottom:56px}
+  .summary-section:last-child{margin-bottom:0}
+  .summary-section-num{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-weight:600;margin-bottom:10px;letter-spacing:.05em;text-transform:uppercase}
+  .summary-section-num::before{content:'';width:20px;height:1px;background:var(--gray-400)}
+  .summary-section h2{font-size:24px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:10px}
+  .summary-section .tldr{font-size:15px;color:var(--ink-soft);line-height:1.65;padding:14px 18px;background:var(--gray-50);border-left:3px solid var(--gray-800);border-radius:4px;margin-bottom:20px}
+  .summary-section .tldr b{color:var(--ink);font-weight:700}
+  .summary-list{list-style:none;display:grid;gap:10px}
+  .summary-list li{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--ink-soft);line-height:1.65}
+  .summary-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gray-500);flex-shrink:0;margin-top:9px}
+  .summary-list li b{color:var(--ink);font-weight:600}
+  .summary-key{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:16px 0}
+  .key-box{padding:14px 16px;background:var(--white);border:1px solid var(--border);border-radius:6px}
+  .key-box .lbl{font-size:11px;color:var(--faint);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .key-box .num{font-size:24px;font-weight:700;color:var(--ink);font-family:'JetBrains Mono',monospace;letter-spacing:-.02em;line-height:1}
+  .key-box .desc{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
+
+  /* SLIDE MODE */
+  .slide-mode{position:fixed;inset:0;background:#0a0a0a;color:#fff;z-index:2000;display:none;overflow:hidden}
+  .slide-mode.active{display:block}
+  .slide-progress{position:absolute;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,.08);z-index:10}
+  .slide-progress-fill{height:100%;background:#fff;transition:width .35s ease;width:0}
+  .slide-topbar{position:absolute;top:0;left:0;right:0;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;z-index:10;background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,transparent 100%)}
+  .slide-brand{font-size:13px;font-weight:600;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:8px;letter-spacing:-.01em}
+  .slide-brand svg{width:15px;height:15px;color:rgba(255,255,255,.4)}
+  .slide-close{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:4px;padding:6px 12px;font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+  .slide-close:hover{background:rgba(255,255,255,.15)}
+  .slide-close svg{width:12px;height:12px}
+  .slide-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:80px 60px}
+  @media (max-width:720px){.slide-stage{padding:70px 24px}}
+  .slide-content{max-width:1000px;width:100%;animation:slideIn .5s ease}
+  @keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .slide-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.4);font-weight:500;letter-spacing:.05em;margin-bottom:20px;text-transform:uppercase}
+  .slide-title{font-size:clamp(28px,4.5vw,56px);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:20px;color:#fff}
+  .slide-subtitle{font-size:clamp(15px,1.6vw,20px);color:rgba(255,255,255,.6);line-height:1.6;max-width:760px;margin-bottom:32px}
+  .slide-list{list-style:none;display:grid;gap:14px;max-width:840px}
+  .slide-list li{display:flex;gap:16px;align-items:flex-start;font-size:clamp(15px,1.5vw,19px);color:rgba(255,255,255,.85);line-height:1.55}
+  .slide-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);flex-shrink:0;margin-top:11px}
+  .slide-list li b{color:#fff;font-weight:600}
+  .slide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;max-width:1000px;margin-top:12px}
+  .slide-card{padding:22px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px}
+  .slide-card h3{font-size:16px;font-weight:600;color:#fff;margin-bottom:8px}
+  .slide-card p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.6}
+  .slide-card .sn{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.35);margin-bottom:10px;letter-spacing:.05em}
+  .slide-stats{display:flex;gap:32px;flex-wrap:wrap;margin-top:24px}
+  .slide-stat .sl{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;font-family:'JetBrains Mono',monospace}
+  .slide-stat .sv{font-size:clamp(36px,5vw,64px);font-weight:700;color:#fff;line-height:1;letter-spacing:-.03em;font-family:'JetBrains Mono',monospace}
+  .slide-stat .su{font-size:14px;color:rgba(255,255,255,.4);margin-left:4px}
+  .slide-nav{position:absolute;bottom:24px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:16px;z-index:10}
+  .slide-nav-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+  .slide-nav-btn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.25)}
+  .slide-nav-btn:disabled{opacity:.3;cursor:not-allowed}
+  .slide-nav-btn svg{width:18px;height:18px}
+  .slide-counter{font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.5);min-width:60px;text-align:center;letter-spacing:.05em}
+  .slide-hint{position:absolute;bottom:84px;left:50%;transform:translateX(-50%);font-size:11.5px;color:rgba(255,255,255,.35);font-family:'JetBrains Mono',monospace;letter-spacing:.03em;white-space:nowrap;pointer-events:none;opacity:0;animation:hintFade 5s ease .5s forwards}
+  @keyframes hintFade{0%{opacity:0}15%{opacity:1}85%{opacity:1}100%{opacity:0}}
+  .slide-cover{text-align:left;max-width:1000px}
+  .slide-cover .cover-tag{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.7);padding:5px 12px;border:1px solid rgba(255,255,255,.2);border-radius:4px;margin-bottom:24px;background:rgba(255,255,255,.04);letter-spacing:.05em;text-transform:uppercase}
+  .slide-cover h1{font-size:clamp(36px,6.5vw,80px);font-weight:700;line-height:1.02;letter-spacing:-.04em;margin-bottom:20px;color:#fff}
+  .slide-cover .cover-sub{font-size:clamp(15px,1.7vw,20px);color:rgba(255,255,255,.55);max-width:640px;line-height:1.55;margin-bottom:36px}
+  .slide-cover .cover-meta{font-size:13px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+
+  .reveal{opacity:0;transform:translateY(8px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="main-nav" id="mainNav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand" onclick="switchView('beranda');return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+      Bab 2 Geografi - Semester Ganjil
+    </a>
+    <div class="nav-view-switch">
+      <button class="view-btn active" data-view="beranda" onclick="switchView('beranda')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Beranda</span>
+      </button>
+      <button class="view-btn" data-view="rangkuman" onclick="switchView('rangkuman')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Rangkuman</span>
+      </button>
+      <button class="view-btn" data-view="materi" onclick="switchView('materi')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span>Materi</span>
+      </button>
+      <button class="view-btn" data-view="slide" onclick="switchView('slide')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span>Slide</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ======================================================= -->
+<!-- VIEW: BERANDA -->
+<!-- ======================================================= -->
+<div class="view active" id="view-beranda">
+
+  <header class="hero">
+    <div class="hero-fade"></div>
+    <div class="wrap">
+      <div class="hero-tag reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Proyek Kelompok · Geografi Kelas XI
+      </div>
+      <div class="hero-label reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Almusdariyah · Angkatan 2024-2026
+      </div>
+      <h1 class="reveal">Indeks Kesejahteraan <span class="accent">Penduduk Indonesia</span></h1>
+      <p class="lede reveal">Sebuah catatan tentang bagaimana kita mengukur kualitas hidup masyarakat. Tersedia dalam tiga mode: <b style="color:#fff">Rangkuman</b> untuk baca cepat, <b style="color:#fff">Materi</b> untuk pemahaman lengkap, dan <b style="color:#fff">Slide</b> untuk presentasi.</p>
+
+      <div class="hero-stats reveal">
+        <div class="stat"><div class="stat-label">IPM 2021</div><div class="stat-value">72,3</div></div>
+        <div class="stat"><div class="stat-label">Harapan Hidup</div><div class="stat-value">73,6<span class="unit">thn</span></div></div>
+        <div class="stat"><div class="stat-label">PDB 2021</div><div class="stat-value">3,7<span class="unit">%</span></div></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="block" id="ikhtisar">
+    <div class="wrap-wide">
+      <div class="wrap" style="padding:0;">
+        <div class="section-head reveal">
+          <div class="section-num">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            Pilih cara belajar
+          </div>
+          <h2 class="section-title">Mau yang mana dulu?</h2>
+          <p class="section-desc">Setiap orang punya gaya belajar yang beda. Pilih mode yang paling cocok buat kamu.</p>
+        </div>
+      </div>
+
+      <div class="overview-grid reveal">
+        <div class="overview-card" onclick="switchView('rangkuman')">
+          <div class="ov-num">R</div>
+          <div class="ov-body">
+            <h3>Rangkuman · 5 menit baca</h3>
+            <p>Versi padat semua materi dalam satu halaman. Cocok buat quick review atau belajar sebelum ujian.</p>
+          </div>
+          <svg class="ov-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div class="overview-card" onclick="switchView('materi')">
+          <div class="ov-num">M</div>
+          <div class="ov-body">
+            <h3>Materi Lengkap</h3>
+            <p>Penjelasan detail dengan tab interaktif, chart, simulasi, dan kuis. Buat yang mau paham mendalam.</p>
+          </div>
+          <svg class="ov-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div class="overview-card" onclick="switchView('slide')">
+          <div class="ov-num">S</div>
+          <div class="ov-body">
+            <h3>Slide Presentasi</h3>
+            <p>Mode full-screen dengan navigasi keyboard. Cocok buat presentasi di depan kelas.</p>
+          </div>
+          <svg class="ov-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div class="overview-card" onclick="switchView('materi');setTimeout(()=>document.getElementById('kuis')?.scrollIntoView({behavior:'smooth'}),300);">
+          <div class="ov-num">K</div>
+          <div class="ov-body">
+            <h3>Kuis & Simulasi</h3>
+            <p>Uji pemahaman dengan 5 soal pilihan ganda, dan coba simulasi alokasi anggaran pembangunan.</p>
+          </div>
+          <svg class="ov-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap-wide">
+      <div class="wrap" style="padding:0;">
+        <div class="section-head reveal">
+          <div class="section-num">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Tim Penyusun
+          </div>
+          <h2 class="section-title">Tentang proyek ini.</h2>
+          <p class="section-desc">Disusun sebagai bagian dari tugas kelompok Geografi untuk memahami konsep Indeks Kesejahteraan Penduduk Indonesia.</p>
+        </div>
+      </div>
+      <div class="wrap" style="padding:0;">
+        <div class="team-grid reveal">
+          <div class="team-member">
+            <div class="avatar">
+              <div class="fallback">AP</div>
+              <img src="foto/allif.jpg" alt="Allif Prayudha" onerror="this.remove()">
+            </div>
+            <h4>Allif Prayudha</h4>
+          </div>
+
+          <div class="team-member">
+            <div class="avatar">
+              <div class="fallback">DS</div>
+              <img src="foto/didin.jpg" alt="Didin Samsudin" onerror="this.remove()">
+            </div>
+            <h4>Didin Samsudin</h4>
+          </div>
+
+          <div class="team-member">
+            <div class="avatar">
+              <div class="fallback">DI</div>
+              <img src="foto/deby.jpg" alt="Deby Indriyani" onerror="this.remove()">
+            </div>
+            <h4>Deby Indriyani</h4>
+          </div>
+
+          <div class="team-member">
+            <div class="avatar">
+              <div class="fallback">FS</div>
+              <img src="foto/feby.jpg" alt="Feby Sapriatna P." onerror="this.remove()">
+            </div>
+            <h4>Feby Sapriatna P.</h4>
+          </div>
+
+          <div class="team-member">
+            <div class="avatar">
+              <div class="fallback">LF</div>
+              <img src="foto/lestari.jpg" alt="Lestari Fatihatul Q." onerror="this.remove()">
+            </div>
+            <h4>Lestari Fatihatul Q.</h4>
+          </div>
+
+          <div class="team-member">
+            <div class="avatar">
+              <div class="fallback">MP</div>
+              <img src="foto/mozah.jpg" alt="Mozah Pertiwi" onerror="this.remove()">
+            </div>
+            <h4>Mozah Pertiwi</h4>
+          </div>
+
+          <div class="team-member">
+            <div class="avatar">
+              <div class="fallback">R</div>
+              <img src="foto/rehan.jpg" alt="Rehan" onerror="this.remove()">
+            </div>
+            <h4>Rehan</h4>
+          </div>
+
+          <div class="team-member">
+            <div class="avatar">
+              <div class="fallback">SM</div>
+              <img src="foto/sintia.jpg" alt="Sintia Muharam" onerror="this.remove()">
+            </div>
+            <h4>Sintia Muharam</h4>
+          </div>
+
+          <div class="team-member">
+            <div class="avatar">
+              <div class="fallback">IF</div>
+              <img src="foto/idzan.jpg" alt="Idzan Fajar Isnain" onerror="this.remove()">
+            </div>
+            <h4>Idzan Fajar Isnain</h4>
+          </div>
+
+        </div>
+        <div class="project-meta reveal">
+          <div class="meta-item"><div class="meta-label">Mata Pelajaran</div><div class="meta-value">Geografi</div></div>
+          <div class="meta-item"><div class="meta-label">Kelas</div><div class="meta-value">XII IPS</div></div>
+          <div class="meta-item"><div class="meta-label">Angkatan</div><div class="meta-value">2024 / 2027</div></div>
+          <div class="meta-item"><div class="meta-label">Sumber Data</div><div class="meta-value">Buku Paket Geografi Kurikulum Merdeka & BPS, 2022</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ======================================================= -->
+<!-- VIEW: RANGKUMAN -->
+<!-- ======================================================= -->
+<div class="view" id="view-rangkuman">
+
+  <header class="summary-hero">
+    <div class="summary-hero-inner">
+      <div class="summary-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Rangkuman · 5 menit baca
+      </div>
+      <h1>Semua yang perlu kamu tahu, di satu halaman.</h1>
+      <p>Versi padat dari materi Indeks Kesejahteraan Penduduk Indonesia. Cocok buat review cepat sebelum ujian atau sebagai contekan belajar.</p>
+      <div class="summary-actions">
+        <button class="btn-white" onclick="switchView('materi')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Buka materi lengkap
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-content">
+    <div class="wrap">
+
+      <div class="summary-section">
+        <div class="summary-section-num">01 · Pengertian</div>
+        <h2>Apa itu kesejahteraan?</h2>
+        <div class="tldr"><b>Intinya:</b> Kesejahteraan bukan hanya soal uang. Ia mencakup banyak aspek seperti sosial, ekonomi, kesehatan, dan lingkungan.</div>
+        <ul class="summary-list">
+          <li>Kesejahteraan = kondisi terpenuhinya kebutuhan dasar manusia secara layak.</li>
+          <li>Ada <b>4 aspek</b>: akses layanan dasar, partisipasi aktif, jaring pengaman sosial, dan sifat multidimensi.</li>
+          <li>Ekonomi Indonesia Q1 2023 tumbuh <b>5,03%.</b> tapi pertumbuhan ekonomi saja tidak cukup untuk mengukur kesejahteraan.</li>
+        </ul>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-num">02 · Indikator</div>
+        <h2>Bagaimana kita mengukurnya?</h2>
+        <div class="tldr"><b>Intinya:</b> Ada <b>7 indikator utama</b> yang digunakan untuk mengukur tingkat kesejahteraan.</div>
+        <ul class="summary-list">
+          <li><b>Kependudukan</b>: jumlah penduduk, kelahiran, kematian, migrasi.</li>
+          <li><b>Kesehatan & Gizi</b>: akses pelayanan, harapan hidup, air bersih, sanitasi.</li>
+          <li><b>Pendidikan</b>: melek huruf, partisipasi sekolah, kualitas pendidikan.</li>
+          <li><b>Ketenagakerjaan</b>: pengangguran, upah, kesempatan kerja layak.</li>
+          <li><b>Konsumsi</b>: pendapatan per kapita, daya beli, akses barang/jasa.</li>
+          <li><b>Perumahan & Lingkungan</b>: rumah layak, sanitasi, lingkungan sehat.</li>
+          <li><b>Kemiskinan</b>: jumlah penduduk di bawah garis kemiskinan.</li>
+        </ul>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-num">03 · Faktor</div>
+        <h2>Apa yang memengaruhinya?</h2>
+        <div class="tldr"><b>Intinya:</b> Ada <b>5 modal dasar</b> yang menentukan tingkat kesejahteraan suatu masyarakat.</div>
+        <div class="summary-key">
+          <div class="key-box"><div class="lbl">Modal 01</div><div class="num">SDM</div><div class="desc">Manusia sehat, terdidik, terampil. Paling fundamental</div></div>
+          <div class="key-box"><div class="lbl">Modal 02</div><div class="num">SDA</div><div class="desc">Tanah, air, udara, mineral. Harus dikelola lestari</div></div>
+          <div class="key-box"><div class="lbl">Modal 03</div><div class="num">Finansial</div><div class="desc">Pendapatan, tabungan, akses pinjaman</div></div>
+          <div class="key-box"><div class="lbl">Modal 04</div><div class="num">Infra</div><div class="desc">Jalan, listrik, sanitasi, transportasi</div></div>
+          <div class="key-box"><div class="lbl">Modal 05</div><div class="num">Sosial</div><div class="desc">Norma, saling percaya, jaringan sosial</div></div>
+        </div>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-num">04 · Data</div>
+        <h2>Bagaimana kondisi terkini?</h2>
+        <div class="tldr"><b>Intinya:</b> Kondisi kesejahteraan Indonesia membaik pasca pandemi. IPM naik, harapan hidup naik, ekonomi pulih.</div>
+        <div class="summary-key">
+          <div class="key-box"><div class="lbl">IPM 2021</div><div class="num">72,3</div><div class="desc">Naik dari 70,8 di tahun 2017</div></div>
+          <div class="key-box"><div class="lbl">Harapan Hidup</div><div class="num">73,6</div><div class="desc">Tahun, dari 72,9 di 2017</div></div>
+          <div class="key-box"><div class="lbl">PDB 2021</div><div class="num">3,7%</div><div class="desc">Pulih dari minus 2,1% (2020)</div></div>
+        </div>
+        <ul class="summary-list">
+          <li>Pandemi 2020 menyebabkan stagnasi. IPM tetap di 71,9.</li>
+          <li>2021 mulai pulih. IPM naik 0,4 poin, harapan hidup naik 0,2 tahun.</li>
+          <li>Sumber: <b>Badan Pusat Statistik (BPS), 2022</b>.</li>
+        </ul>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-num">Kesimpulan</div>
+        <h2>Pesan utama</h2>
+        <div class="tldr"><b>Takeaway:</b> Kesejahteraan itu <b>multidimensi</b>. Pertumbuhan ekonomi saja tidak cukup. harus diikuti pemerataan di semua sektor: pendidikan, kesehatan, lingkungan, dan sosial.</div>
+        <ul class="summary-list">
+          <li>Kalau alokasi pembangunan terlalu berat di satu sektor, kesenjangan justru melebar.</li>
+          <li>Kesejahteraan membutuhkan kerja kolaboratif: pemerintah, masyarakat, sektor swasta.</li>
+          <li>Tujuan akhirnya bukan angka, tapi <b>kualitas hidup</b> manusia.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- VIEW: MATERI -->
+<!-- ======================================================= -->
+<div class="view" id="view-materi">
+
+  <div style="height:60px"></div>
+
+  <section class="block" id="m-pengertian">
+    <div class="wrap-wide">
+      <div class="wrap-mid" style="padding:0;">
+        <div class="section-head reveal">
+          <div class="section-num">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            01 / Pengertian
+          </div>
+          <h2 class="section-title">Apa yang kita maksud dengan sejahtera?</h2>
+          <p class="section-desc">Kesejahteraan adalah kondisi terpenuhinya kebutuhan dasar manusia. Bukan hanya secara materi, tetapi juga sosial, kesehatan, dan lingkungan.</p>
+        </div>
+        <div class="prose reveal"><p>Secara umum, <b>kesejahteraan</b> dapat dipahami sebagai kondisi ketika seseorang atau masyarakat dapat memenuhi kebutuhan hidupnya secara layak. Ini mencakup banyak aspek, mulai dari akses terhadap pendidikan dan kesehatan, hingga rasa aman dan keadilan sosial.</p></div>
+        <div class="aspects reveal">
+          <div class="aspect"><svg class="aspect-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><h3>Akses Layanan Dasar</h3><p>Mencakup akses terhadap pendidikan, kesehatan, keamanan, dan keadilan bagi seluruh masyarakat.</p></div>
+          <div class="aspect"><svg class="aspect-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><h3>Partisipasi Aktif</h3><p>Penguatan jaringan sosial, partisipasi aktif masyarakat dalam proses pembangunan, dan penurunan kesenjangan.</p></div>
+          <div class="aspect"><svg class="aspect-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><h3>Jaring Pengaman Sosial</h3><p>Adanya keputusan sosial menjadi faktor penting dalam meningkatkan kesejahteraan dan pertumbuhan ekonomi.</p></div>
+          <div class="aspect"><svg class="aspect-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><h3>Multidimensi</h3><p>Kesejahteraan mencakup aspek sosial, ekonomi, kesehatan, dan lingkungan secara bersamaan.</p></div>
+        </div>
+        <div class="callout reveal">
+          <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <p>Ekonomi Indonesia pada triwulan pertama 2023 tumbuh sebesar <b>5,03%</b> dibandingkan periode yang sama tahun lalu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt" id="m-indikator">
+    <div class="wrap-wide">
+      <div class="wrap-mid" style="padding:0;">
+        <div class="section-head reveal">
+          <div class="section-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11H1l5-9 5 9z"/><path d="M14 11H22l-5-9-5 9z"/><path d="M3 21h18M6 21v-6M12 21V11M18 21v-6"/></svg>02 / Indikator</div>
+          <h2 class="section-title">Bagaimana kita mengukurnya?</h2>
+          <p class="section-desc">Ada tujuh indikator utama yang biasa digunakan untuk mengukur tingkat kesejahteraan suatu masyarakat.</p>
+        </div>
+        <div class="tabs reveal">
+          <div class="tabs-nav">
+            <button class="tab-btn active" data-tab="t1" data-group="indikator">Kependudukan</button>
+            <button class="tab-btn" data-tab="t2" data-group="indikator">Kesehatan</button>
+            <button class="tab-btn" data-tab="t3" data-group="indikator">Pendidikan</button>
+            <button class="tab-btn" data-tab="t4" data-group="indikator">Ketenagakerjaan</button>
+            <button class="tab-btn" data-tab="t5" data-group="indikator">Konsumsi</button>
+            <button class="tab-btn" data-tab="t6" data-group="indikator">Perumahan</button>
+            <button class="tab-btn" data-tab="t7" data-group="indikator">Kemiskinan</button>
+          </div>
+          <div class="tab-panel active" id="t1"><div class="tab-body"><h3>Kependudukan</h3><p class="sub">Memahami dinamika populasi sebagai fondasi perencanaan pembangunan.</p><ul><li><span>Informasi mengenai <b>jumlah penduduk</b>, tingkat kelahiran, kematian, dan migrasi.</span></li><li><span>Penting untuk memahami <b>dinamika populasi</b> dan kebutuhan pembangunan.</span></li><li><span>Indikator pembantu: kepadatan penduduk, rasio jenis kelamin, angka beban ketergantungan.</span></li></ul></div></div>
+          <div class="tab-panel" id="t2"><div class="tab-body"><h3>Kesehatan & Gizi</h3><p class="sub">Kesehatan adalah hak dasar setiap warga negara.</p><ul><li><span>Melibatkan <b>akses pelayanan kesehatan</b>, tingkat harapan hidup, tingkat kematian, dan prevalensi penyakit.</span></li><li><span>Status gizi penduduk, penyakit menular dan tidak menular.</span></li><li><span>Ketersediaan <b>air bersih dan sanitasi layak</b>, serta program gizi dan imunisasi.</span></li></ul></div></div>
+          <div class="tab-panel" id="t3"><div class="tab-body"><h3>Pendidikan</h3><p class="sub">Kunci untuk memutus rantai kemiskinan.</p><ul><li><span>Tingkat <b>melek huruf</b>, angka partisipasi sekolah, dan kualitas pendidikan.</span></li><li><span>Peningkatan akses dan kualitas pendidikan menjadi <b>prioritas</b>.</span></li><li><span>Bertujuan mengurangi kesenjangan dan meningkatkan kualitas tenaga kerja.</span></li></ul></div></div>
+          <div class="tab-panel" id="t4"><div class="tab-body"><h3>Ketenagakerjaan</h3><p class="sub">Pekerjaan layak adalah kunci kesejahteraan ekonomi.</p><ul><li><span>Meliputi <b>tingkat pengangguran, tingkat partisipasi angkatan kerja, dan tingkat upah</b>.</span></li><li><span>Menurunkan pengangguran dan meningkatkan <b>kesempatan kerja layak dan produktif</b>.</span></li></ul></div></div>
+          <div class="tab-panel" id="t5"><div class="tab-body"><h3>Taraf & Pola Konsumsi</h3><p class="sub">Daya beli adalah cerminan kesejahteraan.</p><ul><li><span>Mencakup <b>pendapatan per kapita, pola konsumsi, dan akses terhadap barang dan jasa</b>.</span></li><li><span>Pertumbuhan ekonomi yang <b>inklusif</b> dan peningkatan daya beli masyarakat berperan penting.</span></li></ul></div></div>
+          <div class="tab-panel" id="t6"><div class="tab-body"><h3>Perumahan & Lingkungan</h3><p class="sub">Tempat tinggal layak adalah hak dasar.</p><ul><li><span>Akses terhadap <b>perumahan layak, sanitasi, air bersih, dan lingkungan sehat</b>.</span></li><li><span>Penyediaan perumahan <b>terjangkau dan berkualitas</b> serta perlindungan lingkungan.</span></li></ul></div></div>
+          <div class="tab-panel" id="t7"><div class="tab-body"><h3>Kemiskinan</h3><p class="sub">Indikator paling fundamental dalam kesejahteraan.</p><ul><li><span>Mengukur jumlah penduduk yang hidup <b>di bawah garis kemiskinan</b>.</span></li><li><span>Melibatkan <b>program perlindungan sosial, pemberdayaan ekonomi, dan akses layanan dasar</b>.</span></li></ul></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="m-faktor">
+    <div class="wrap-wide">
+      <div class="wrap-mid" style="padding:0;">
+        <div class="section-head reveal">
+          <div class="section-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>03 / Faktor</div>
+          <h2 class="section-title">Apa yang memengaruhinya?</h2>
+          <p class="section-desc">Ada lima modal dasar yang menentukan tingkat kesejahteraan.</p>
+        </div>
+        <div class="faktor-list reveal">
+          <div class="faktor" onclick="this.classList.toggle('open')"><div class="faktor-header"><div class="faktor-num">01</div><div class="faktor-title"><h3>Sumber Daya Manusia</h3><div class="sub">Kualitas pendidikan, kesehatan, dan gizi</div></div><svg class="faktor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faktor-body">SDM adalah faktor paling fundamental. Tanpa manusia yang sehat, terdidik, dan terampil, pembangunan tidak akan berjalan optimal. Investasi di bidang pendidikan dan kesehatan adalah investasi jangka panjang.</div></div>
+          <div class="faktor" onclick="this.classList.toggle('open')"><div class="faktor-header"><div class="faktor-num">02</div><div class="faktor-title"><h3>Sumber Daya Alam</h3><div class="sub">Ketersediaan tanah, air, udara, dan mineral</div></div><svg class="faktor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faktor-body">SDA menjadi modal penting, terutama bagi negara agraris seperti Indonesia. Namun pengelolaannya harus berkelanjutan agar tidak habis di masa depan dan tetap ramah lingkungan.</div></div>
+          <div class="faktor" onclick="this.classList.toggle('open')"><div class="faktor-header"><div class="faktor-num">03</div><div class="faktor-title"><h3>Modal Finansial</h3><div class="sub">Pendapatan, tabungan, dan akses pinjaman</div></div><svg class="faktor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faktor-body">Modal finansial memungkinkan seseorang memulai usaha, mengakses layanan, atau menghadapi kondisi darurat. Akses ke lembaga keuangan juga penting agar masyarakat bisa mengembangkan diri.</div></div>
+          <div class="faktor" onclick="this.classList.toggle('open')"><div class="faktor-header"><div class="faktor-num">04</div><div class="faktor-title"><h3>Infrastruktur</h3><div class="sub">Jalan, listrik, sanitasi, dan transportasi</div></div><svg class="faktor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faktor-body">Infrastruktur menghubungkan masyarakat dengan layanan dasar dan pasar. Jalan yang baik, listrik yang stabil, dan sanitasi yang layak secara langsung meningkatkan kualitas hidup.</div></div>
+          <div class="faktor" onclick="this.classList.toggle('open')"><div class="faktor-header"><div class="faktor-num">05</div><div class="faktor-title"><h3>Modal Sosial</h3><div class="sub">Norma, nilai, saling percaya, dan jaringan sosial</div></div><svg class="faktor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faktor-body">Modal sosial adalah perekat masyarakat. Rasa saling percaya, gotong royong, dan jejaring sosial mempermudah kolaborasi untuk memecahkan masalah bersama.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt" id="m-sebaran">
+    <div class="wrap-wide">
+      <div class="wrap-mid" style="padding:0;">
+        <div class="section-head reveal">
+          <div class="section-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>04 / Data</div>
+          <h2 class="section-title">Bagaimana kondisi terkini?</h2>
+          <p class="section-desc">Badan Pusat Statistik (BPS) merilis laporan indikator kesejahteraan rakyat dan statistik kriminal untuk menggambarkan kondisi Indonesia selama dan setelah pandemi Covid-19.</p>
+        </div>
+        <div class="charts reveal">
+          <div class="chart-box"><div class="chart-head"><div><h4>Indeks Pembangunan Manusia</h4><div class="src">BPS · 2022</div></div></div><div class="chart-canvas"><canvas id="chartIPM"></canvas></div></div>
+          <div class="chart-box"><div class="chart-head"><div><h4>Angka Harapan Hidup</h4><div class="src">BPS · 2022 · tahun</div></div></div><div class="chart-canvas"><canvas id="chartUHH"></canvas></div></div>
+        </div>
+        <div class="table-wrap reveal">
+          <table><thead><tr><th>Tahun</th><th>IPM</th><th>Perubahan</th><th>Harapan Hidup</th></tr></thead>
+          <tbody>
+            <tr><td>2017</td><td class="val">70,8</td><td class="flat">-</td><td>72,9 thn</td></tr>
+            <tr><td>2018</td><td class="val">71,4</td><td class="up">▲ 0,6</td><td>73,0 thn</td></tr>
+            <tr><td>2019</td><td class="val">71,9</td><td class="up">▲ 0,5</td><td>73,2 thn</td></tr>
+            <tr><td>2020</td><td class="val">71,9</td><td class="flat">- 0,0</td><td>73,4 thn</td></tr>
+            <tr><td>2021</td><td class="val">72,3</td><td class="up">▲ 0,4</td><td>73,6 thn</td></tr>
+          </tbody></table>
+        </div>
+        <div class="callout reveal">
+          <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <p>Produk Domestik Bruto (PDB) bergerak ke arah positif menjadi <b>3,7%</b> (2021), setelah tahun sebelumnya di <b>minus 2,1%</b>. Ini menandakan pemulihan ekonomi pasca pandemi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="m-game">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>05 / Simulasi</div>
+        <h2 class="section-title">Coba jadi Menteri Perencanaan.</h2>
+        <p class="section-desc">Kamu punya 100 poin anggaran pembangunan. Ini contoh alokasi yang buruk. tugasmu memperbaikinya sampai skornya naik.</p>
+      </div>
+      <div class="game reveal">
+        <div class="game-head"><h3>Alokasi Anggaran Pembangunan</h3><p>Total anggaran tersedia: 100 poin. Sistem akan menghitung indeks secara langsung. Bisakah kamu capai skor 100?</p></div>
+        <div class="sliders">
+          <div class="slider" id="s-pendidikan"><div class="slider-head"><label>Pendidikan</label><span class="v" id="v-pendidikan">0</span></div><input type="range" id="pendidikan" min="0" max="100" value="0"></div>
+          <div class="slider" id="s-kesehatan"><div class="slider-head"><label>Kesehatan</label><span class="v" id="v-kesehatan">0</span></div><input type="range" id="kesehatan" min="0" max="100" value="0"></div>
+          <div class="slider" id="s-ekonomi"><div class="slider-head"><label>Ekonomi</label><span class="v" id="v-ekonomi">100</span></div><input type="range" id="ekonomi" min="0" max="100" value="100"></div>
+          <div class="slider" id="s-infrastruktur"><div class="slider-head"><label>Infrastruktur</label><span class="v" id="v-infrastruktur">0</span></div><input type="range" id="infrastruktur" min="0" max="100" value="0"></div>
+          <div class="slider" id="s-lingkungan" style="grid-column:1/-1"><div class="slider-head"><label>Lingkungan</label><span class="v" id="v-lingkungan">0</span></div><input type="range" id="lingkungan" min="0" max="100" value="0"></div>
+        </div>
+        <div class="score">
+          <div class="score-left"><div class="lbl">Total Anggaran</div><div class="total"><b id="total">100</b> / 100</div></div>
+          <div class="score-right" id="scoreRight"><div class="lbl">Indeks Kesejahteraan</div><div class="big" id="skor">0</div><div class="msg" id="pesan">Kurang sejahtera. Alokasi terlalu timpang.</div></div>
+        </div>
+        <div class="score-tip">// perbaiki alokasi ini. coba bagi rata 20 poin ke setiap sektor</div>
+        <div class="btn-row"><button class="btn-text" onclick="resetGame()">Reset ke alokasi awal</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt" id="kuis">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/><circle cx="12" cy="12" r="10"/></svg>06 / Kuis</div>
+        <h2 class="section-title">Uji pemahamanmu.</h2>
+        <p class="section-desc">Coba jawab 5 pertanyaan berikut. Skor akan dihitung otomatis.</p>
+      </div>
+      <div class="quiz reveal" id="quizBox"></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ======================================================= -->
+<!-- VIEW: SLIDE -->
+<!-- ======================================================= -->
+<div class="view" id="view-slide">
+  <div style="padding:130px 32px 96px;text-align:center;max-width:800px;margin:0 auto">
+    <div class="section-num" style="justify-content:center;display:flex">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Mode Presentasi
+    </div>
+    <h1 class="section-title" style="font-size:clamp(30px,4.5vw,42px)">Siap presentasi di depan kelas?</h1>
+    <p class="section-desc" style="margin:0 auto 32px">Masuk ke mode full-screen. Kamu bisa navigasi pakai tombol panah kiri/kanan di keyboard, atau klik tombol di layar. Tekan ESC untuk keluar.</p>
+    <button class="btn-primary" style="padding:14px 24px;font-size:14px" onclick="enterSlideMode()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Mulai Presentasi
+    </button>
+  </div>
+</div>
+
+</main>
+
+<footer id="mainFooter">
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg> Bab 2 Geografi - Semester Ganjil
+        </div>
+        <div>Proyek kelompok · Geografi Kelas XII IPS · 2024/2027</div>
+      </div>
+      <div class="right">
+        <div>Buku Paket Geografi Kurikulum Merdeka & BPS, 2022</div>
+        <div style="margin-top:4px">Untuk keperluan edukasi</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- SLIDE MODE -->
+<div class="slide-mode" id="slideMode">
+  <div class="slide-progress"><div class="slide-progress-fill" id="slideProgress"></div></div>
+  <div class="slide-topbar">
+    <div class="slide-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+      Indeks Kesejahteraan · Presentasi
+    </div>
+    <button class="slide-close" onclick="exitSlideMode()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Keluar (ESC)
+    </button>
+  </div>
+  <div class="slide-stage" id="slideStage"></div>
+  <div class="slide-hint" id="slideHint">← → untuk navigasi · F fullscreen · ESC keluar</div>
+  <div class="slide-nav">
+    <button class="slide-nav-btn" id="slidePrev" onclick="prevSlide()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="slide-counter" id="slideCounter">1 / 12</div>
+    <button class="slide-nav-btn" id="slideNext" onclick="nextSlide()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  // ===== VIEW SWITCHING =====
+  const views = ['beranda', 'rangkuman', 'materi', 'slide'];
+  function switchView(name) {
+    if (!views.includes(name)) name = 'beranda';
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + name)?.classList.add('active');
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b.dataset.view === name));
+    if (history.replaceState) history.replaceState(null, '', '#' + name);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    document.getElementById('mainFooter').style.display = (name === 'slide') ? 'none' : 'block';
+    setTimeout(() => {
+      initReveals();
+      if (name === 'materi') initChartsIfNeeded();
+    }, 100);
+  }
+  window.addEventListener('DOMContentLoaded', () => {
+    const hash = location.hash.replace('#', '');
+    if (views.includes(hash)) switchView(hash);
+    else switchView('beranda');
+  });
+
+  // ===== REVEAL =====
+  let revealObserver;
+  function initReveals() {
+    if (revealObserver) revealObserver.disconnect();
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.view.active .reveal').forEach(el => revealObserver.observe(el));
+  }
+
+  // ===== TABS =====
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.dataset.group;
+      document.querySelectorAll(`.tab-btn[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const parent = btn.closest('.tabs');
+      parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ===== GAME =====
+  const DEFAULT_ALLOC = { pendidikan: 0, kesehatan: 0, ekonomi: 100, infrastruktur: 0, lingkungan: 0 };
+  const sliderIds = ['pendidikan', 'kesehatan', 'ekonomi', 'infrastruktur', 'lingkungan'];
+  const IDEAL = 20, DEV_FACTOR = 0.625;
+
+  function updateGame() {
+    let total = 0, deviasi = 0;
+    sliderIds.forEach(id => {
+      const el = document.getElementById(id); if (!el) return;
+      const val = parseInt(el.value);
+      total += val;
+      document.getElementById('v-' + id).innerText = val;
+      deviasi += Math.abs(val - IDEAL);
+      document.getElementById('s-' + id).classList.toggle('ideal', val === IDEAL);
+    });
+    const totalEl = document.getElementById('total'); if (!totalEl) return;
+    totalEl.innerText = total;
+    const scoreRight = document.getElementById('scoreRight');
+    const big = document.getElementById('skor');
+    const msg = document.getElementById('pesan');
+    let skor = 0, pesan = '';
+    if (total > 100) { skor = 0; pesan = 'Anggaran melebihi 100. Kurangi alokasi dulu.'; }
+    else {
+      skor = Math.round(Math.max(0, 100 - (deviasi * DEV_FACTOR)));
+      if (skor >= 90) pesan = 'Alokasi ideal, masyarakat sangat sejahtera.';
+      else if (skor >= 70) pesan = 'Bagus, tapi masih ada sektor yang perlu diperhatikan.';
+      else if (skor >= 50) pesan = 'Cukup. Alokasi terlalu berat di beberapa sektor.';
+      else pesan = 'Kurang sejahtera. Alokasi terlalu timpang.';
+    }
+    big.innerText = skor;
+    msg.innerText = pesan;
+  }
+  function resetGame() {
+    sliderIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = DEFAULT_ALLOC[id];
+    });
+    updateGame();
+  }
+  sliderIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', updateGame);
+  });
+  setTimeout(updateGame, 100);
+
+  // ===== QUIZ =====
+  const quizData = [
+    { q: "Kesejahteraan disebut bersifat multidimensi. Apa maksudnya?", options: ["Kesejahteraan hanya diukur dari pendapatan ekonomi saja.","Kesejahteraan mencakup banyak aspek: sosial, ekonomi, kesehatan, dan lingkungan.","Kesejahteraan hanya milik negara maju.","Kesejahteraan diukur dari jumlah penduduk saja."], correct: 1, explain: "Kesejahteraan tidak bisa diukur hanya dari uang. Ia mencakup akses layanan dasar, kesehatan, pendidikan, sosial, dan lingkungan." },
+    { q: "Berapa nilai IPM (Indeks Pembangunan Manusia) Indonesia pada tahun 2021?", options: ["70,8","71,9","72,3","73,6"], correct: 2, explain: "IPM Indonesia 2021 adalah 72,3, naik dari 71,9 di tahun 2020 dan 70,8 di tahun 2017." },
+    { q: "Manakah yang BUKAN termasuk tujuh indikator indeks kesejahteraan?", options: ["Kesehatan dan gizi","Pendidikan","Kemiskinan","Pariwisata dan budaya"], correct: 3, explain: "Tujuh indikatornya: kependudukan, kesehatan & gizi, pendidikan, ketenagakerjaan, konsumsi, perumahan & lingkungan, dan kemiskinan." },
+    { q: "Dari 5 modal dasar kesejahteraan, mana yang paling fundamental?", options: ["Sumber Daya Alam","Sumber Daya Manusia","Modal Finansial","Infrastruktur"], correct: 1, explain: "SDM adalah yang paling fundamental. Tanpa manusia yang sehat, terdidik, dan terampil, modal lainnya tidak akan optimal." },
+    { q: "Mengapa pembagian anggaran yang merata menghasilkan skor tertinggi di simulasi?", options: ["Karena sistemnya begitu tanpa alasan.","Karena ekonomi satu-satunya sektor penting.","Karena kesejahteraan bersifat multidimensi, semua sektor saling terkait.","Karena anggaran harus habis dipakai."], correct: 2, explain: "Tepat! Inilah pesan utama simulasi: kesejahteraan itu multidimensi. Kalau terlalu berat di satu sektor, yang lain tumbang." }
+  ];
+  let currentQ = 0, score = 0, answered = false;
+  const quizBox = document.getElementById('quizBox');
+  function renderQuiz() {
+    if (!quizBox) return;
+    if (currentQ >= quizData.length) { renderResult(); return; }
+    answered = false;
+    const q = quizData[currentQ];
+    const segs = quizData.map((_, i) => {
+      let cls = 'progress-seg';
+      if (i < currentQ) cls += ' done'; else if (i === currentQ) cls += ' current';
+      return `<div class="${cls}"></div>`;
+    }).join('');
+    quizBox.innerHTML = `
+      <div class="quiz-progress"><div class="counter">Soal <b>${currentQ + 1}</b> dari ${quizData.length}</div><div class="quiz-score-mini">Skor: <b>${score}</b>/${quizData.length}</div></div>
+      <div class="progress-track">${segs}</div>
+      <div class="quiz-question"><span class="qnum">Pertanyaan ${String(currentQ + 1).padStart(2, '0')}</span>${q.q}</div>
+      <div class="quiz-options">${q.options.map((opt, i) => `<button class="option" onclick="answerQuiz(${i})"><span class="key">${String.fromCharCode(65 + i)}</span><span>${opt}</span></button>`).join('')}</div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-actions"><button class="btn-primary" id="nextBtn" onclick="nextQuiz()" disabled>${currentQ === quizData.length - 1 ? 'Lihat hasil' : 'Soal berikutnya'}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div>`;
+  }
+  function answerQuiz(selected) {
+    if (answered) return; answered = true;
+    const q = quizData[currentQ];
+    const options = quizBox.querySelectorAll('.option');
+    options.forEach((opt, i) => {
+      opt.disabled = true;
+      if (i === q.correct) opt.classList.add('correct');
+      else if (i === selected) opt.classList.add('wrong');
+      else opt.classList.add('disabled-dim');
+    });
+    const isCorrect = selected === q.correct;
+    if (isCorrect) score++;
+    const fb = document.getElementById('quizFeedback');
+    fb.className = 'quiz-feedback show ' + (isCorrect ? 'correct' : 'wrong');
+    fb.innerHTML = `<b>${isCorrect ? '✓ Benar!' : '✕ Kurang tepat.'}</b> ${q.explain}`;
+    document.getElementById('nextBtn').disabled = false;
+    const sm = quizBox.querySelector('.quiz-score-mini b');
+    if (sm) sm.innerText = score;
+  }
+  function nextQuiz() { currentQ++; currentQ >= quizData.length ? renderResult() : renderQuiz(); }
+  function renderResult() {
+    const percent = Math.round((score / quizData.length) * 100);
+    let verdict, icon;
+    if (percent >= 80) { verdict = 'Pemahamanmu sangat baik!'; icon = '<polyline points="20 6 9 17 4 12"/>'; }
+    else if (percent >= 60) { verdict = 'Cukup baik. Coba tinjau kembali bagian yang masih ragu.'; icon = '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'; }
+    else { verdict = 'Masih perlu belajar lagi. Yuk baca ulang bagian indikator dan faktor.'; icon = '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'; }
+    quizBox.innerHTML = `<div class="quiz-result show"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon}</svg></div><h3>Kuis selesai</h3><div class="final-score">${score}<span class="of"> / ${quizData.length}</span></div><div class="verdict">${verdict}</div><div class="btn-row"><button class="btn-primary" onclick="restartQuiz()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Coba lagi</button></div></div>`;
+  }
+  function restartQuiz() { currentQ = 0; score = 0; answered = false; renderQuiz(); }
+  renderQuiz();
+
+  // ===== CHARTS =====
+  let chartsReady = false;
+  function initCharts() {
+    if (chartsReady || typeof Chart === 'undefined') return;
+    const canvas1 = document.getElementById('chartIPM');
+    const canvas2 = document.getElementById('chartUHH');
+    if (!canvas1 || !canvas2) return;
+    chartsReady = true;
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.font.size = 11;
+    Chart.defaults.color = '#9ca3af';
+    const commonOpts = {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { backgroundColor: '#111827', titleColor: '#fff', bodyColor: '#e5e7eb', padding: 10, cornerRadius: 4, displayColors: false } },
+      scales: { x: { grid: { display: false }, ticks: { color: '#9ca3af' }, border: { color: '#e5e7eb' } }, y: { grid: { color: '#f3f4f6' }, ticks: { color: '#9ca3af' }, border: { display: false } } }
+    };
+    const ctx1 = canvas1.getContext('2d');
+    const grad1 = ctx1.createLinearGradient(0, 0, 0, 200);
+    grad1.addColorStop(0, 'rgba(31, 41, 55, 0.18)');
+    grad1.addColorStop(1, 'rgba(31, 41, 55, 0)');
+    new Chart(ctx1, { type: 'line', data: { labels: ['2017','2018','2019','2020','2021'], datasets: [{ data: [70.8,71.4,71.9,71.9,72.3], borderColor: '#1f2937', backgroundColor: grad1, borderWidth: 2, fill: true, tension: 0.35, pointBackgroundColor: '#1f2937', pointBorderColor: '#ffffff', pointBorderWidth: 2, pointRadius: 3, pointHoverRadius: 6 }] }, options: { ...commonOpts, scales: { ...commonOpts.scales, y: { ...commonOpts.scales.y, min: 69.5, max: 73.5 } } } });
+    new Chart(canvas2.getContext('2d'), { type: 'bar', data: { labels: ['2017','2018','2019','2020','2021'], datasets: [{ data: [72.9,73.0,73.2,73.4,73.6], backgroundColor: '#4b5563', borderRadius: 2, barThickness: 24, hoverBackgroundColor: '#1f2937' }] }, options: { ...commonOpts, scales: { ...commonOpts.scales, y: { ...commonOpts.scales.y, min: 72, max: 74 } } } });
+  }
+  function initChartsIfNeeded() {
+    if (document.getElementById('view-materi').classList.contains('active')) setTimeout(initCharts, 200);
+  }
+
+  // ===== SLIDE MODE =====
+  const slides = [
+    { content: `<div class="slide-cover"><div class="cover-tag">Proyek Kelompok · Geografi Kelas XI</div><h1>Indeks Kesejahteraan<br>Penduduk Indonesia</h1><p class="cover-sub">Memahami bagaimana kita mengukur kualitas hidup masyarakat, mulai dari definisi, indikator, faktor, sampai data terbaru.</p><div class="cover-meta">Kelompok 03 Geografi · 2024/2027 · Sumber: Buku Paket Geografi Kurikulum Merdeka & BPS 2022</div></div>` },
+    { content: `<div class="slide-num">02 / Ikhtisar</div><h2 class="slide-title">Apa yang akan kita bahas</h2><p class="slide-subtitle">Empat bagian utama dalam presentasi ini.</p><div class="slide-grid"><div class="slide-card"><div class="sn">01</div><h3>Pengertian</h3><p>Definisi kesejahteraan dan empat aspek di dalamnya.</p></div><div class="slide-card"><div class="sn">02</div><h3>Indikator</h3><p>Tujuh indikator untuk mengukur kesejahteraan.</p></div><div class="slide-card"><div class="sn">03</div><h3>Faktor</h3><p>Lima modal dasar yang memengaruhinya.</p></div><div class="slide-card"><div class="sn">04</div><h3>Data</h3><p>Sebaran IPM & harapan hidup 2017-2021.</p></div></div>` },
+    { content: `<div class="slide-num">03 / Pengertian</div><h2 class="slide-title">Kesejahteraan bukan sekadar angka.</h2><p class="slide-subtitle">Ini adalah kondisi terpenuhinya kebutuhan dasar manusia. Bukan hanya materi, tetapi juga sosial, kesehatan, dan lingkungan.</p>` },
+    { content: `<div class="slide-num">04 / Pengertian</div><h2 class="slide-title">Empat aspek kesejahteraan</h2><div class="slide-grid" style="margin-top:24px"><div class="slide-card"><h3>Akses Layanan Dasar</h3><p>Pendidikan, kesehatan, keamanan, dan keadilan untuk semua.</p></div><div class="slide-card"><h3>Partisipasi Aktif</h3><p>Masyarakat ikut membangun, kesenjangan menurun.</p></div><div class="slide-card"><h3>Jaring Pengaman Sosial</h3><p>Keputusan sosial yang mendorong pertumbuhan.</p></div><div class="slide-card"><h3>Multidimensi</h3><p>Sosial, ekonomi, kesehatan, dan lingkungan sekaligus.</p></div></div>` },
+    { content: `<div class="slide-num">05 / Indikator</div><h2 class="slide-title">Bagaimana kita mengukurnya?</h2><p class="slide-subtitle">Untuk mengukur kesejahteraan, kita butuh indikator. Ada tujuh indikator utama yang digunakan BPS.</p>` },
+    { content: `<div class="slide-num">06 / Indikator</div><h2 class="slide-title">Tujuh indikator utama</h2><ul class="slide-list" style="margin-top:24px"><li><b>Kependudukan</b>: jumlah penduduk, kelahiran, kematian, migrasi</li><li><b>Kesehatan & Gizi</b>: akses pelayanan, harapan hidup, sanitasi</li><li><b>Pendidikan</b>: melek huruf, partisipasi sekolah, kualitas</li><li><b>Ketenagakerjaan</b>: pengangguran, upah, kerja layak</li><li><b>Konsumsi</b>: pendapatan per kapita, daya beli</li><li><b>Perumahan & Lingkungan</b>: rumah layak, lingkungan sehat</li><li><b>Kemiskinan</b>: jumlah penduduk di bawah garis kemiskinan</li></ul>` },
+    { content: `<div class="slide-num">07 / Faktor</div><h2 class="slide-title">Lima modal dasar</h2><div class="slide-grid" style="margin-top:24px"><div class="slide-card"><div class="sn">01</div><h3>Sumber Daya Manusia</h3><p>Manusia sehat, terdidik, terampil. Paling fundamental.</p></div><div class="slide-card"><div class="sn">02</div><h3>Sumber Daya Alam</h3><p>Tanah, air, udara, mineral, kelola secara lestari.</p></div><div class="slide-card"><div class="sn">03</div><h3>Modal Finansial</h3><p>Pendapatan, tabungan, akses pinjaman.</p></div><div class="slide-card"><div class="sn">04</div><h3>Infrastruktur</h3><p>Jalan, listrik, sanitasi, transportasi.</p></div><div class="slide-card"><div class="sn">05</div><h3>Modal Sosial</h3><p>Norma, saling percaya, jaringan sosial.</p></div></div>` },
+    { content: `<div class="slide-num">08 / Data</div><h2 class="slide-title">IPM Indonesia terus naik</h2><p class="slide-subtitle">Indeks Pembangunan Manusia dari 2017 sampai 2021.</p><div class="slide-stats"><div class="slide-stat"><div class="sl">2017</div><div class="sv">70,8</div></div><div class="slide-stat"><div class="sl">2019</div><div class="sv">71,9</div></div><div class="slide-stat"><div class="sl">2021</div><div class="sv">72,3</div></div></div><p class="slide-subtitle" style="margin-top:32px;font-size:15px">Pandemi 2020 sempat membuat stagnasi (71,9), tapi 2021 mulai pulih.</p>` },
+    { content: `<div class="slide-num">09 / Data</div><h2 class="slide-title">Harapan hidup juga meningkat</h2><p class="slide-subtitle">Angka Harapan Hidup (tahun) 2017—2021.</p><div class="slide-stats"><div class="slide-stat"><div class="sl">2017</div><div class="sv">72,9<span class="su">thn</span></div></div><div class="slide-stat"><div class="sl">2020</div><div class="sv">73,4<span class="su">thn</span></div></div><div class="slide-stat"><div class="sl">2021</div><div class="sv">73,6<span class="su">thn</span></div></div></div>` },
+    { content: `<div class="slide-num">10 / Analisis</div><h2 class="slide-title">Mengapa ekonomi saja tidak cukup?</h2><p class="slide-subtitle">Pertumbuhan ekonomi hanya salah satu indikator kesejahteraan.</p><ul class="slide-list" style="margin-top:24px"><li>Jika pertumbuhan tidak merata, <b>kesenjangan justru melebar</b>.</li><li>Aspek non-ekonomi seperti kesehatan, pendidikan, lingkungan, dan rasa aman juga harus diperhatikan.</li><li>Kesejahteraan itu <b>multidimensi</b>, bukan sekadar angka PDB.</li></ul>` },
+    { content: `<div class="slide-num">11 / Kesimpulan</div><h2 class="slide-title">Pesan utama</h2><div class="slide-grid" style="margin-top:24px"><div class="slide-card"><h3>Multidimensi</h3><p>Diukur dari sosial, ekonomi, kesehatan, dan lingkungan.</p></div><div class="slide-card"><h3>Inklusif & Berkelanjutan</h3><p>Pembangunan harus merata, tidak hanya di satu sektor.</p></div><div class="slide-card"><h3>Kolaboratif</h3><p>Butuh sinergi pemerintah, masyarakat, dan sektor swasta.</p></div></div>` },
+    { content: `<div class="slide-cover"><div class="cover-tag">Terima kasih</div><h1 style="font-size:clamp(36px,6vw,72px)">Ada pertanyaan?</h1><p class="cover-sub">Silakan masuk ke sesi tanya jawab. Kami siap menjelaskan bagian mana pun yang masih kurang jelas.</p><div class="cover-meta">Tim Penyusun · Geografi Kelas XI IPS 1 · 2023/2024</div></div>` }
+  ];
+  let currentSlide = 0;
+  function renderSlide() {
+    const stage = document.getElementById('slideStage');
+    const s = slides[currentSlide];
+    stage.innerHTML = `<div class="slide-content">${s.content}</div>`;
+    document.getElementById('slideCounter').innerText = `${currentSlide + 1} / ${slides.length}`;
+    document.getElementById('slideProgress').style.width = ((currentSlide + 1) / slides.length * 100) + '%';
+    document.getElementById('slidePrev').disabled = currentSlide === 0;
+    document.getElementById('slideNext').disabled = currentSlide === slides.length - 1;
+  }
+  function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+  function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
+  function enterSlideMode() {
+    document.getElementById('slideMode').classList.add('active');
+    document.getElementById('mainNav').classList.add('hidden');
+    document.body.style.overflow = 'hidden';
+    currentSlide = 0;
+    renderSlide();
+    setTimeout(() => document.getElementById('slideHint').style.display = 'block', 100);
+  }
+  function exitSlideMode() {
+    document.getElementById('slideMode').classList.remove('active');
+    document.getElementById('mainNav').classList.remove('hidden');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', (e) => {
+    const slideActive = document.getElementById('slideMode').classList.contains('active');
+    if (slideActive) {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+      else if (e.key === 'Escape') exitSlideMode();
+      else if (e.key === 'f' || e.key === 'F') {
+        if (document.fullscreenElement) document.exitFullscreen();
+        else document.documentElement.requestFullscreen();
+      }
+    }
+  });
+
+  setTimeout(() => { initReveals(); updateGame(); }, 200);
+</script>
+
+</body>
+</html>
