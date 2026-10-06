@@ -477,6 +477,368 @@
 
   .reveal{opacity:0;transform:translateY(8px);transition:opacity .6s ease,transform .6s ease}
   .reveal.visible{opacity:1;transform:translateY(0)}
+
+  /* SLIDE GAME */
+.slide-game{max-width:920px;margin-top:20px}
+.sg-sliders{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;margin-bottom:20px}
+@media (max-width:720px){.sg-sliders{grid-template-columns:1fr}}
+.sg-slider-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.sg-slider-head label{font-size:13px;color:rgba(255,255,255,.8);font-weight:500}
+.sg-slider-head .v{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;color:#fff;transition:color .2s}
+.sg-slider-head .v.ideal{color:#4ade80}
+.sg-slider input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:rgba(255,255,255,.2);outline:none;cursor:pointer;border-radius:2px}
+.sg-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:#fff;border-radius:50%;cursor:pointer;border:2px solid #0a0a0a;box-shadow:0 0 0 1px rgba(255,255,255,.6);transition:transform .15s}
+.sg-slider input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.sg-slider input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#fff;border-radius:50%;cursor:pointer;border:2px solid #0a0a0a}
+.sg-score{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.sg-score-left .lbl{font-size:11px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.sg-score-left .total{font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(255,255,255,.6)}
+.sg-score-left .total b{color:#fff;font-weight:700;font-size:20px}
+.sg-score-right{text-align:right}
+.sg-score-right .lbl{font-size:11px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.sg-score-right .big{font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:700;line-height:.95;color:#fff;letter-spacing:-.03em;transition:color .25s}
+.sg-score-right.good .big{color:#4ade80}
+.sg-score-right.warn .big{color:#fbbf24}
+.sg-score-right.bad .big{color:#f87171}
+.sg-score-right .msg{font-size:13px;color:rgba(255,255,255,.5);margin-top:8px;max-width:280px;line-height:1.5;font-weight:500}
+.sg-tip{margin-top:16px;font-size:11.5px;color:rgba(255,255,255,.35);text-align:center;font-family:'JetBrains Mono',monospace}
+.sg-reset{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:6px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;padding:8px 16px;margin-top:16px;transition:all .15s}
+.sg-reset:hover{background:rgba(255,255,255,.18)}
+
+/* SLIDE QUIZ */
+.slide-quiz{max-width:920px;margin-top:20px}
+.sq-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sq-counter{font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.5);letter-spacing:.05em;text-transform:uppercase}
+.sq-counter b{color:#fff}
+.sq-score-mini{font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.5)}
+.sq-score-mini b{color:#fff}
+.sq-question{font-size:clamp(16px,1.8vw,22px);font-weight:600;color:#fff;line-height:1.45;margin-bottom:20px;letter-spacing:-.02em}
+.sq-options{display:grid;gap:8px;margin-bottom:20px}
+.sq-option{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;cursor:pointer;transition:all .15s;font-family:inherit;font-size:15px;color:rgba(255,255,255,.85);text-align:left;line-height:1.5}
+.sq-option:hover:not(:disabled){background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25)}
+.sq-option:disabled{cursor:default}
+.sq-option .key{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:rgba(255,255,255,.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#fff;flex-shrink:0;transition:all .15s}
+.sq-option.correct{background:rgba(74,222,128,.12);border-color:#4ade80;color:#4ade80}
+.sq-option.correct .key{background:#4ade80;color:#0a0a0a}
+.sq-option.wrong{background:rgba(248,113,113,.12);border-color:#f87171;color:#f87171}
+.sq-option.wrong .key{background:#f87171;color:#0a0a0a}
+.sq-option.disabled-dim{opacity:.5}
+.sq-feedback{display:none;padding:14px 18px;border-radius:6px;font-size:14px;line-height:1.55;margin-bottom:16px;border-left:3px solid}
+.sq-feedback.show{display:block}
+.sq-feedback.correct{background:rgba(74,222,128,.1);border-color:#4ade80;color:#bbf7d0}
+.sq-feedback.wrong{background:rgba(248,113,113,.1);border-color:#f87171;color:#fecaca}
+.sq-feedback b{font-weight:700;color:#fff}
+.sq-actions{display:flex;justify-content:flex-end;gap:10px}
+.sq-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:6px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;padding:10px 20px;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+.sq-btn:hover:not(:disabled){background:rgba(255,255,255,.2)}
+.sq-btn:disabled{opacity:.4;cursor:not-allowed}
+.sq-btn.primary{background:#fff;color:#0a0a0a;border-color:#fff;font-weight:600}
+.sq-btn.primary:hover:not(:disabled){background:#e5e7eb}
+.sq-result{text-align:center;padding:20px}
+.sq-result .final{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1;margin:16px 0}
+.sq-result .final .of{font-size:22px;color:rgba(255,255,255,.4);font-weight:500}
+.sq-result h3{font-size:22px;font-weight:700;color:#fff;margin-bottom:8px}
+.sq-result .verdict{font-size:15px;color:rgba(255,255,255,.6);margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.55}
+/* ===== SLIDE ACCORDION ===== */
+.slide-accordion{display:grid;gap:8px;max-width:900px;margin-top:16px}
+.sa-item{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;
+  overflow:hidden;
+  transition:background .25s,border-color .25s;
+}
+.sa-item:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)}
+.sa-item.open{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.28)}
+.sa-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;user-select:none}
+.sa-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;font-weight:600;
+  color:rgba(255,255,255,.35);
+  flex-shrink:0;width:26px;
+  transition:color .25s;
+}
+.sa-item.open .sa-num{color:#fff}
+.sa-title{
+  font-size:clamp(14px,1.4vw,17px);
+  font-weight:600;color:#fff;flex:1;
+  letter-spacing:-.01em;line-height:1.4;
+}
+.sa-icon{
+  width:20px;height:20px;flex-shrink:0;
+  color:rgba(255,255,255,.5);
+  position:relative;
+  transition:transform .3s ease,color .3s;
+}
+.sa-icon::before,.sa-icon::after{
+  content:'';position:absolute;background:currentColor;border-radius:1px;
+}
+.sa-icon::before{top:50%;left:3px;right:3px;height:1.5px;transform:translateY(-50%)}
+.sa-icon::after{left:50%;top:3px;bottom:3px;width:1.5px;transform:translateX(-50%);transition:opacity .2s}
+.sa-item.open .sa-icon{color:#fff;transform:rotate(180deg)}
+.sa-item.open .sa-icon::after{opacity:0}
+.sa-body{
+  max-height:0;overflow:hidden;
+  transition:max-height .35s ease,padding .3s ease;
+  padding:0 20px;
+  margin-left:40px;
+  color:rgba(255,255,255,.72);
+  font-size:clamp(13px,1.3vw,15px);
+  line-height:1.65;
+}
+.sa-item.open .sa-body{max-height:400px;padding-bottom:18px}
+.sa-body ul{list-style:none;margin-top:2px}
+.sa-body li{position:relative;padding-left:16px;margin-bottom:8px}
+.sa-body li:last-child{margin-bottom:0}
+.sa-body li::before{
+  content:'';position:absolute;left:0;top:9px;
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,.45);
+}
+.sa-body b{color:#fff;font-weight:600}
+.sa-hint{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11.5px;
+  color:rgba(255,255,255,.35);
+  margin-top:16px;
+  text-align:center;
+  letter-spacing:.03em;
+}
+
+/* ===== SLIDE TABLE (dark) ===== */
+.slide-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.slide-table th{
+  text-align:left;
+  padding:12px 16px;
+  font-weight:600;
+  color:rgba(255,255,255,.55);
+  font-size:11px;
+  font-family:'JetBrains Mono',monospace;
+  background:rgba(255,255,255,.04);
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.slide-table td{
+  padding:12px 16px;
+  color:rgba(255,255,255,.85);
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  transition:background .2s;
+}
+.slide-table tr:last-child td{border-bottom:none}
+.slide-table tr:hover td{background:rgba(255,255,255,.05)}
+.slide-table .val{color:#fff;font-weight:600}
+.slide-table .up{color:#4ade80;font-weight:500}
+.slide-table .flat{color:rgba(255,255,255,.4)}
+
+/* Easter egg: anggaran dikorupsi */
+.sg-score-right.corrupt .msg,
+.score-right.corrupt .msg {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #f87171 !important;
+  letter-spacing: 0.02em;
+  animation: corruptPulse 1s ease-in-out infinite;
+}
+
+@keyframes corruptPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.02); }
+}
+
+/* ===== BAGIKAN ===== */
+.share-hero{padding:130px 0 60px;background:var(--gray-800);color:#fff;position:relative;overflow:hidden}
+.share-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
+.share-hero-inner{position:relative;z-index:2;max-width:760px;margin:0 auto;padding:0 32px;text-align:center}
+.share-hero h1{font-size:clamp(28px,4.5vw,40px);font-weight:700;line-height:1.15;letter-spacing:-.03em;margin-bottom:14px}
+.share-hero p{font-size:16px;color:#9ca3af;max-width:520px;margin:0 auto;line-height:1.6}
+
+.share-content{padding:72px 0 96px}
+.share-wrap{max-width:640px;margin:0 auto;padding:0 24px}
+
+.qr-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:32px;
+  text-align:center;
+  margin-bottom:24px;
+  box-shadow:0 24px 48px -24px rgba(0,0,0,.15);
+}
+.qr-frame{
+  display:inline-block;
+  padding:16px;
+  background:var(--white);
+  border:2px solid var(--border);
+  border-radius:12px;
+  margin-bottom:24px;
+  position:relative;
+}
+.qr-frame::before,
+.qr-frame::after{
+  content:'';
+  position:absolute;
+  width:24px;
+  height:24px;
+  border:3px solid var(--gray-800);
+  border-radius:3px;
+}
+.qr-frame::before{top:-8px;left:-8px;border-right:none;border-bottom:none}
+.qr-frame::after{bottom:-8px;right:-8px;border-left:none;border-top:none}
+
+.qr-card img{
+  display:block;
+  width:280px;
+  height:280px;
+  object-fit:contain;
+  border-radius:4px;
+}
+@media (max-width:480px){
+  .qr-card{padding:20px}
+  .qr-card img{width:220px;height:220px}
+}
+
+.qr-label{
+  font-size:13px;
+  color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:600;
+  margin-bottom:12px;
+}
+
+.qr-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-qr{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:11px 22px;
+  border-radius:8px;
+  font-family:inherit;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .15s;
+  border:1px solid var(--gray-800);
+  background:var(--gray-800);
+  color:#fff;
+}
+.btn-qr:hover{background:var(--gray-900);border-color:var(--gray-900);transform:translateY(-1px)}
+.btn-qr.ghost{background:transparent;color:var(--gray-800)}
+.btn-qr.ghost:hover{background:var(--gray-50);color:var(--gray-900)}
+.btn-qr svg{width:15px;height:15px}
+
+.link-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px;
+}
+.link-card .lc-label{
+  font-size:12px;
+  color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:600;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.link-card .lc-label::before{
+  content:'';
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#4ade80;
+  box-shadow:0 0 8px #4ade80;
+  animation:livePulse 1.5s infinite;
+}
+@keyframes livePulse{
+  0%,100%{opacity:1}
+  50%{opacity:.3}
+}
+
+.link-box{
+  display:flex;
+  gap:8px;
+  background:var(--gray-50);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:6px 6px 6px 16px;
+  align-items:center;
+  transition:border-color .2s;
+}
+.link-box:focus-within{border-color:var(--gray-800);background:#fff}
+
+.link-box input{
+  flex:1;
+  border:none;
+  background:transparent;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13.5px;
+  color:var(--ink);
+  outline:none;
+  min-width:0;
+  padding:10px 0;
+}
+.link-box input::selection{background:var(--gray-800);color:#fff}
+
+.btn-copy{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:10px 16px;
+  border-radius:8px;
+  font-family:inherit;
+  font-size:13.5px;
+  font-weight:600;
+  cursor:pointer;
+  border:1px solid var(--gray-800);
+  background:var(--gray-800);
+  color:#fff;
+  transition:all .15s;
+  flex-shrink:0;
+  white-space:nowrap;
+}
+.btn-copy:hover{background:var(--gray-900)}
+.btn-copy.copied{background:#166534;border-color:#166534}
+.btn-copy svg{width:14px;height:14px}
+
+.share-hint{
+  margin-top:20px;
+  font-size:13px;
+  color:var(--faint);
+  text-align:center;
+  line-height:1.6;
+}
+
+.share-toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background:var(--gray-800);
+  color:#fff;
+  padding:12px 20px;
+  border-radius:100px;
+  font-size:13.5px;
+  font-weight:500;
+  box-shadow:0 12px 32px -8px rgba(0,0,0,.4);
+  opacity:0;
+  transition:all .35s cubic-bezier(0.4,0,0.2,1);
+  z-index:3000;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  pointer-events:none;
+}
+.share-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.share-toast svg{width:16px;height:16px;color:#4ade80}
 </style>
 </head>
 <body>
@@ -505,6 +867,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         <span>Slide</span>
       </button>
+      <button class="view-btn" data-view="bagikan" onclick="switchView('bagikan')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span>Bagikan</span>
+      </button>
     </div>
   </div>
 </nav>
@@ -521,7 +887,7 @@
     <div class="wrap">
       <div class="hero-tag reveal">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Proyek Kelompok · Geografi Kelas XI
+        Proyek Kelompok · Geografi Kelas XII
       </div>
       <div class="hero-label reveal">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -906,7 +1272,7 @@
         <div class="sliders">
           <div class="slider" id="s-pendidikan"><div class="slider-head"><label>Pendidikan</label><span class="v" id="v-pendidikan">0</span></div><input type="range" id="pendidikan" min="0" max="100" value="0"></div>
           <div class="slider" id="s-kesehatan"><div class="slider-head"><label>Kesehatan</label><span class="v" id="v-kesehatan">0</span></div><input type="range" id="kesehatan" min="0" max="100" value="0"></div>
-          <div class="slider" id="s-ekonomi"><div class="slider-head"><label>Ekonomi</label><span class="v" id="v-ekonomi">100</span></div><input type="range" id="ekonomi" min="0" max="100" value="100"></div>
+          <div class="slider" id="s-ekonomi"><div class="slider-head"><label>Ekonomi</label><span class="v" id="v-ekonomi">0</span></div><input type="range" id="ekonomi" min="0" max="100" value="100"></div>
           <div class="slider" id="s-infrastruktur"><div class="slider-head"><label>Infrastruktur</label><span class="v" id="v-infrastruktur">0</span></div><input type="range" id="infrastruktur" min="0" max="100" value="0"></div>
           <div class="slider" id="s-lingkungan" style="grid-column:1/-1"><div class="slider-head"><label>Lingkungan</label><span class="v" id="v-lingkungan">0</span></div><input type="range" id="lingkungan" min="0" max="100" value="0"></div>
         </div>
@@ -914,7 +1280,7 @@
           <div class="score-left"><div class="lbl">Total Anggaran</div><div class="total"><b id="total">100</b> / 100</div></div>
           <div class="score-right" id="scoreRight"><div class="lbl">Indeks Kesejahteraan</div><div class="big" id="skor">0</div><div class="msg" id="pesan">Kurang sejahtera. Alokasi terlalu timpang.</div></div>
         </div>
-        <div class="score-tip">// perbaiki alokasi ini. coba bagi rata 20 poin ke setiap sektor</div>
+        <div class="score-tip">// perbaiki alokasi ini.</div>
         <div class="btn-row"><button class="btn-text" onclick="resetGame()">Reset ke alokasi awal</button></div>
       </div>
     </div>
@@ -949,6 +1315,62 @@
       Mulai Presentasi
     </button>
   </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- VIEW: BAGIKAN -->
+<!-- ======================================================= -->
+<div class="view" id="view-bagikan">
+
+  <header class="share-hero">
+    <div class="share-hero-inner">
+      <div class="summary-badge" style="display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;color:#d1d5db;padding:5px 12px;border:1px solid rgba(255,255,255,.14);border-radius:4px;margin-bottom:20px;background:rgba(255,255,255,.05);letter-spacing:.04em;text-transform:uppercase">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Bagikan
+      </div>
+      <h1>Bagiin ke teman-temen kamu ;).</h1>
+      <p>Scan QR code pakai kamera HP, atau salin link di bawah ini untuk di-share ke grup kelas.</p>
+    </div>
+  </header>
+
+  <div class="share-content">
+    <div class="share-wrap">
+
+      <div class="qr-card">
+        <div class="qr-label">Scan QR Code</div>
+        <div class="qr-frame">
+          <img id="qrImage" src="" alt="QR Code untuk web ini" crossorigin="anonymous">
+        </div>
+        <div class="qr-actions">
+          <button class="btn-qr" onclick="downloadQR()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download QR
+          </button>
+          <button class="btn-qr ghost" onclick="window.print()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Cetak
+          </button>
+        </div>
+      </div>
+
+      <div class="link-card">
+        <div class="lc-label">Link web</div>
+        <div class="link-box">
+          <input type="text" id="shareLinkInput" readonly value="">
+          <button class="btn-copy" id="copyBtn" onclick="copyShareLink()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Salin</span>
+          </button>
+        </div>
+        <p class="share-hint">
+          Klik tombol <b>Salin</b> untuk men-copy link, atau pilih manual di kolom atas.<br>
+          Bagikan ke teman-temanmu biar semua bisa belajar bareng.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 </main>
@@ -997,7 +1419,7 @@
 
 <script>
   // ===== VIEW SWITCHING =====
-  const views = ['beranda', 'rangkuman', 'materi', 'slide'];
+  const views = ['beranda', 'rangkuman', 'materi', 'slide', 'bagikan'];
   function switchView(name) {
     if (!views.includes(name)) name = 'beranda';
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -1007,9 +1429,10 @@
     window.scrollTo({ top: 0, behavior: 'instant' });
     document.getElementById('mainFooter').style.display = (name === 'slide') ? 'none' : 'block';
     setTimeout(() => {
-      initReveals();
-      if (name === 'materi') initChartsIfNeeded();
-    }, 100);
+    initReveals();
+    if (name === 'materi') initChartsIfNeeded();
+    if (name === 'bagikan') initShare();
+  }, 100);
   }
   window.addEventListener('DOMContentLoaded', () => {
     const hash = location.hash.replace('#', '');
@@ -1045,49 +1468,78 @@
   });
 
   // ===== GAME =====
-  const DEFAULT_ALLOC = { pendidikan: 0, kesehatan: 0, ekonomi: 100, infrastruktur: 0, lingkungan: 0 };
-  const sliderIds = ['pendidikan', 'kesehatan', 'ekonomi', 'infrastruktur', 'lingkungan'];
-  const IDEAL = 20, DEV_FACTOR = 0.625;
+  const DEFAULT_ALLOC = { pendidikan: 0, kesehatan: 0, ekonomi: 0, infrastruktur: 0, lingkungan: 0 };
+const sliderIds = ['pendidikan', 'kesehatan', 'ekonomi', 'infrastruktur', 'lingkungan'];
+const IDEAL = 20;
 
-  function updateGame() {
-    let total = 0, deviasi = 0;
-    sliderIds.forEach(id => {
-      const el = document.getElementById(id); if (!el) return;
-      const val = parseInt(el.value);
-      total += val;
-      document.getElementById('v-' + id).innerText = val;
-      deviasi += Math.abs(val - IDEAL);
-      document.getElementById('s-' + id).classList.toggle('ideal', val === IDEAL);
-    });
-    const totalEl = document.getElementById('total'); if (!totalEl) return;
-    totalEl.innerText = total;
-    const scoreRight = document.getElementById('scoreRight');
-    const big = document.getElementById('skor');
-    const msg = document.getElementById('pesan');
-    let skor = 0, pesan = '';
-    if (total > 100) { skor = 0; pesan = 'Anggaran melebihi 100. Kurangi alokasi dulu.'; }
-    else {
-      skor = Math.round(Math.max(0, 100 - (deviasi * DEV_FACTOR)));
-      if (skor >= 90) pesan = 'Alokasi ideal, masyarakat sangat sejahtera.';
-      else if (skor >= 70) pesan = 'Bagus, tapi masih ada sektor yang perlu diperhatikan.';
-      else if (skor >= 50) pesan = 'Cukup. Alokasi terlalu berat di beberapa sektor.';
-      else pesan = 'Kurang sejahtera. Alokasi terlalu timpang.';
+function updateGame() {
+  let total = 0, deviasi = 0;
+  sliderIds.forEach(id => {
+    const el = document.getElementById(id); if (!el) return;
+    const val = parseInt(el.value);
+    total += val;
+    document.getElementById('v-' + id).innerText = val;
+    deviasi += Math.abs(val - IDEAL);
+    document.getElementById('s-' + id).classList.toggle('ideal', val === IDEAL);
+  });
+
+  const totalEl = document.getElementById('total'); if (!totalEl) return;
+  totalEl.innerText = total;
+
+  const scoreRight = document.getElementById('scoreRight');
+  const big = document.getElementById('skor');
+  const msg = document.getElementById('pesan');
+
+  let skor = 0, pesan = '', kelas = '';
+
+  if (total > 100) {
+    skor = 0;
+    pesan = 'Anggaran melebihi 100. Kurangi alokasi dulu.';
+    kelas = 'bad';
+  } else if (total === 0) {
+    skor = 0;
+    pesan = '🚨ANGGAARANNYA JANGAN DI KORUPSI WOY!!🚨';
+    kelas = 'bad corrupt';
+  } else {
+    const rasioTerpakai = total / 100;
+    const rasioPemerataan = Math.max(0, 100 - deviasi * 0.5) / 100;
+    skor = Math.round(rasioTerpakai * rasioPemerataan * 100);
+
+    if (skor >= 90) {
+      pesan = 'Alokasi ideal, masyarakat sangat sejahtera.';
+      kelas = 'good';
+    } else if (skor >= 70) {
+      pesan = 'Bagus, tapi masih ada sektor yang perlu diperhatikan.';
+      kelas = '';
+    } else if (skor >= 50) {
+      pesan = 'Cukup. Alokasi terlalu berat di beberapa sektor.';
+      kelas = 'warn';
+    } else {
+      pesan = 'Kurang sejahtera. Alokasi terlalu timpang.';
+      kelas = 'bad';
     }
-    big.innerText = skor;
-    msg.innerText = pesan;
   }
-  function resetGame() {
-    sliderIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.value = DEFAULT_ALLOC[id];
-    });
-    updateGame();
-  }
+
+  big.innerText = skor;
+  msg.innerText = pesan;
+
+  // Update warna kelas (kalau CSS di punya .score-right.good/.warn/.bad)
+  if (scoreRight) scoreRight.className = 'score-right ' + kelas;
+}
+
+function resetGame() {
   sliderIds.forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.addEventListener('input', updateGame);
+    if (el) el.value = DEFAULT_ALLOC[id];
   });
-  setTimeout(updateGame, 100);
+  updateGame();
+}
+
+sliderIds.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updateGame);
+});
+setTimeout(updateGame, 100);
 
   // ===== QUIZ =====
   const quizData = [
@@ -1177,29 +1629,225 @@
 
   // ===== SLIDE MODE =====
   const slides = [
-    { content: `<div class="slide-cover"><div class="cover-tag">Proyek Kelompok · Geografi Kelas XI</div><h1>Indeks Kesejahteraan<br>Penduduk Indonesia</h1><p class="cover-sub">Memahami bagaimana kita mengukur kualitas hidup masyarakat, mulai dari definisi, indikator, faktor, sampai data terbaru.</p><div class="cover-meta">Kelompok 03 Geografi · 2024/2027 · Sumber: Buku Paket Geografi Kurikulum Merdeka & BPS 2022</div></div>` },
-    { content: `<div class="slide-num">02 / Ikhtisar</div><h2 class="slide-title">Apa yang akan kita bahas</h2><p class="slide-subtitle">Empat bagian utama dalam presentasi ini.</p><div class="slide-grid"><div class="slide-card"><div class="sn">01</div><h3>Pengertian</h3><p>Definisi kesejahteraan dan empat aspek di dalamnya.</p></div><div class="slide-card"><div class="sn">02</div><h3>Indikator</h3><p>Tujuh indikator untuk mengukur kesejahteraan.</p></div><div class="slide-card"><div class="sn">03</div><h3>Faktor</h3><p>Lima modal dasar yang memengaruhinya.</p></div><div class="slide-card"><div class="sn">04</div><h3>Data</h3><p>Sebaran IPM & harapan hidup 2017-2021.</p></div></div>` },
-    { content: `<div class="slide-num">03 / Pengertian</div><h2 class="slide-title">Kesejahteraan bukan sekadar angka.</h2><p class="slide-subtitle">Ini adalah kondisi terpenuhinya kebutuhan dasar manusia. Bukan hanya materi, tetapi juga sosial, kesehatan, dan lingkungan.</p>` },
-    { content: `<div class="slide-num">04 / Pengertian</div><h2 class="slide-title">Empat aspek kesejahteraan</h2><div class="slide-grid" style="margin-top:24px"><div class="slide-card"><h3>Akses Layanan Dasar</h3><p>Pendidikan, kesehatan, keamanan, dan keadilan untuk semua.</p></div><div class="slide-card"><h3>Partisipasi Aktif</h3><p>Masyarakat ikut membangun, kesenjangan menurun.</p></div><div class="slide-card"><h3>Jaring Pengaman Sosial</h3><p>Keputusan sosial yang mendorong pertumbuhan.</p></div><div class="slide-card"><h3>Multidimensi</h3><p>Sosial, ekonomi, kesehatan, dan lingkungan sekaligus.</p></div></div>` },
-    { content: `<div class="slide-num">05 / Indikator</div><h2 class="slide-title">Bagaimana kita mengukurnya?</h2><p class="slide-subtitle">Untuk mengukur kesejahteraan, kita butuh indikator. Ada tujuh indikator utama yang digunakan BPS.</p>` },
-    { content: `<div class="slide-num">06 / Indikator</div><h2 class="slide-title">Tujuh indikator utama</h2><ul class="slide-list" style="margin-top:24px"><li><b>Kependudukan</b>: jumlah penduduk, kelahiran, kematian, migrasi</li><li><b>Kesehatan & Gizi</b>: akses pelayanan, harapan hidup, sanitasi</li><li><b>Pendidikan</b>: melek huruf, partisipasi sekolah, kualitas</li><li><b>Ketenagakerjaan</b>: pengangguran, upah, kerja layak</li><li><b>Konsumsi</b>: pendapatan per kapita, daya beli</li><li><b>Perumahan & Lingkungan</b>: rumah layak, lingkungan sehat</li><li><b>Kemiskinan</b>: jumlah penduduk di bawah garis kemiskinan</li></ul>` },
-    { content: `<div class="slide-num">07 / Faktor</div><h2 class="slide-title">Lima modal dasar</h2><div class="slide-grid" style="margin-top:24px"><div class="slide-card"><div class="sn">01</div><h3>Sumber Daya Manusia</h3><p>Manusia sehat, terdidik, terampil. Paling fundamental.</p></div><div class="slide-card"><div class="sn">02</div><h3>Sumber Daya Alam</h3><p>Tanah, air, udara, mineral, kelola secara lestari.</p></div><div class="slide-card"><div class="sn">03</div><h3>Modal Finansial</h3><p>Pendapatan, tabungan, akses pinjaman.</p></div><div class="slide-card"><div class="sn">04</div><h3>Infrastruktur</h3><p>Jalan, listrik, sanitasi, transportasi.</p></div><div class="slide-card"><div class="sn">05</div><h3>Modal Sosial</h3><p>Norma, saling percaya, jaringan sosial.</p></div></div>` },
-    { content: `<div class="slide-num">08 / Data</div><h2 class="slide-title">IPM Indonesia terus naik</h2><p class="slide-subtitle">Indeks Pembangunan Manusia dari 2017 sampai 2021.</p><div class="slide-stats"><div class="slide-stat"><div class="sl">2017</div><div class="sv">70,8</div></div><div class="slide-stat"><div class="sl">2019</div><div class="sv">71,9</div></div><div class="slide-stat"><div class="sl">2021</div><div class="sv">72,3</div></div></div><p class="slide-subtitle" style="margin-top:32px;font-size:15px">Pandemi 2020 sempat membuat stagnasi (71,9), tapi 2021 mulai pulih.</p>` },
-    { content: `<div class="slide-num">09 / Data</div><h2 class="slide-title">Harapan hidup juga meningkat</h2><p class="slide-subtitle">Angka Harapan Hidup (tahun) 2017—2021.</p><div class="slide-stats"><div class="slide-stat"><div class="sl">2017</div><div class="sv">72,9<span class="su">thn</span></div></div><div class="slide-stat"><div class="sl">2020</div><div class="sv">73,4<span class="su">thn</span></div></div><div class="slide-stat"><div class="sl">2021</div><div class="sv">73,6<span class="su">thn</span></div></div></div>` },
-    { content: `<div class="slide-num">10 / Analisis</div><h2 class="slide-title">Mengapa ekonomi saja tidak cukup?</h2><p class="slide-subtitle">Pertumbuhan ekonomi hanya salah satu indikator kesejahteraan.</p><ul class="slide-list" style="margin-top:24px"><li>Jika pertumbuhan tidak merata, <b>kesenjangan justru melebar</b>.</li><li>Aspek non-ekonomi seperti kesehatan, pendidikan, lingkungan, dan rasa aman juga harus diperhatikan.</li><li>Kesejahteraan itu <b>multidimensi</b>, bukan sekadar angka PDB.</li></ul>` },
-    { content: `<div class="slide-num">11 / Kesimpulan</div><h2 class="slide-title">Pesan utama</h2><div class="slide-grid" style="margin-top:24px"><div class="slide-card"><h3>Multidimensi</h3><p>Diukur dari sosial, ekonomi, kesehatan, dan lingkungan.</p></div><div class="slide-card"><h3>Inklusif & Berkelanjutan</h3><p>Pembangunan harus merata, tidak hanya di satu sektor.</p></div><div class="slide-card"><h3>Kolaboratif</h3><p>Butuh sinergi pemerintah, masyarakat, dan sektor swasta.</p></div></div>` },
-    { content: `<div class="slide-cover"><div class="cover-tag">Terima kasih</div><h1 style="font-size:clamp(36px,6vw,72px)">Ada pertanyaan?</h1><p class="cover-sub">Silakan masuk ke sesi tanya jawab. Kami siap menjelaskan bagian mana pun yang masih kurang jelas.</p><div class="cover-meta">Tim Penyusun · Geografi Kelas XI IPS 1 · 2023/2024</div></div>` }
-  ];
+  // 1. COVER
+  { content: `<div class="slide-cover"><div class="cover-tag">Proyek Kelompok · Geografi Kelas XII</div><h1>Indeks Kesejahteraan<br>Penduduk Indonesia</h1><p class="cover-sub">Memahami bagaimana kita mengukur kualitas hidup masyarakat, mulai dari definisi, indikator, faktor, sampai data terbaru.</p><div class="cover-meta">Kelompok 03 Geografi · 2024/2027 · Sumber: Buku Paket Geografi Kurikulum Merdeka & BPS 2022</div></div>` },
+
+  // 2. IKHTISAR
+  { content: `<div class="slide-num">02 / Ikhtisar</div><h2 class="slide-title">Apa yang akan kita bahas</h2><p class="slide-subtitle">Enam bagian utama, termasuk simulasi dan kuis interaktif.</p><div class="slide-grid"><div class="slide-card"><div class="sn">01</div><h3>Pengertian</h3><p>Definisi kesejahteraan dan empat aspek di dalamnya.</p></div><div class="slide-card"><div class="sn">02</div><h3>Indikator</h3><p>Tujuh indikator untuk mengukur kesejahteraan.</p></div><div class="slide-card"><div class="sn">03</div><h3>Faktor</h3><p>Lima modal dasar yang memengaruhinya.</p></div><div class="slide-card"><div class="sn">04</div><h3>Data</h3><p>Sebaran IPM & harapan hidup 2017-2021.</p></div><div class="slide-card"><div class="sn">05</div><h3>Simulasi</h3><p>Main game alokasi anggaran langsung di slide.</p></div><div class="slide-card"><div class="sn">06</div><h3>Kuis</h3><p>Uji pemahaman dengan 5 soal interaktif.</p></div></div>` },
+
+  // 3. PENGERTIAN
+  { content: `<div class="slide-num">03 / Pengertian</div><h2 class="slide-title">Apa yang kita maksud dengan sejahtera?</h2><p class="slide-subtitle">Klik setiap kartu untuk melihat penjelasan lengkapnya.</p><div class="slide-accordion"><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">01</div><div class="sa-title">Definisi Kesejahteraan</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Secara umum, <b>kesejahteraan</b> adalah kondisi ketika seseorang atau masyarakat dapat memenuhi kebutuhan hidupnya secara layak.</li><li>Mencakup banyak aspek, mulai dari akses terhadap pendidikan dan kesehatan, hingga rasa aman dan keadilan sosial.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">02</div><div class="sa-title">Mengapa Ini Penting?</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Kesejahteraan adalah <b>tujuan akhir</b> dari semua pembangunan.</li><li>Ekonomi Indonesia Q1 2023 tumbuh <b>5,03%</b>, tapi pertumbuhan ekonomi saja tidak cukup untuk mengukur kesejahteraan.</li><li>Butuh indikator yang lebih luas: sosial, kesehatan, pendidikan, dan lingkungan.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">03</div><div class="sa-title">Kenapa Multidimensi?</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Karena kesejahteraan tidak bisa diukur hanya dari <b>uang atau pendapatan</b>.</li><li>Orang bisa kaya secara materi, tapi tetap tidak sejahtera kalau kesehatan, pendidikan, atau lingkungannya buruk.</li></ul></div></div></div><p class="sa-hint">Klik kartu untuk membuka penjelasan</p>` },
+
+  // 4. EMPAT ASPEK
+  { content: `<div class="slide-num">04 / Pengertian</div><h2 class="slide-title">Empat aspek kesejahteraan</h2><p class="slide-subtitle">Klik setiap aspek untuk melihat penjelasan detailnya.</p><div class="slide-accordion"><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">01</div><div class="sa-title">Akses Layanan Dasar</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Mencakup akses terhadap <b>pendidikan, kesehatan, keamanan, dan keadilan</b> bagi seluruh masyarakat.</li><li>Setiap warga negara berhak mendapatkan layanan dasar tanpa terkecuali.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">02</div><div class="sa-title">Partisipasi Aktif</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li><b>Penguatan jaringan sosial</b> di masyarakat.</li><li>Partisipasi aktif masyarakat dalam proses pembangunan.</li><li>Tujuan: <b>penurunan kesenjangan</b> sosial-ekonomi.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">03</div><div class="sa-title">Jaring Pengaman Sosial</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Adanya <b>keputusan sosial</b> menjadi faktor penting dalam meningkatkan kesejahteraan.</li><li>Mendorong pertumbuhan ekonomi yang lebih stabil dan merata.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">04</div><div class="sa-title">Multidimensi</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Kesejahteraan mencakup <b>empat dimensi sekaligus</b>: sosial, ekonomi, kesehatan, dan lingkungan.</li><li>Tidak bisa diukur hanya dari satu aspek saja, misalnya uang.</li></ul></div></div></div><p class="sa-hint">Klik kartu untuk membuka penjelasan</p>` },
+
+  // 5. TUJUH INDIKATOR
+  { content: `<div class="slide-num">05 / Indikator</div><h2 class="slide-title">Tujuh indikator kesejahteraan</h2><p class="slide-subtitle">Klik setiap indikator untuk melihat penjelasan detailnya.</p><div class="slide-accordion"><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">01</div><div class="sa-title">Kependudukan</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Informasi mengenai <b>jumlah penduduk</b>, tingkat kelahiran, kematian, dan migrasi.</li><li>Penting untuk memahami dinamika populasi dan kebutuhan pembangunan.</li><li>Indikator pembantu: kepadatan penduduk, rasio jenis kelamin, angka beban ketergantungan.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">02</div><div class="sa-title">Kesehatan & Gizi</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Melibatkan <b>akses pelayanan kesehatan</b>, tingkat harapan hidup, tingkat kematian, dan prevalensi penyakit.</li><li>Status gizi penduduk, penyakit menular dan tidak menular.</li><li>Ketersediaan <b>air bersih dan sanitasi layak</b>, serta program gizi dan imunisasi.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">03</div><div class="sa-title">Pendidikan</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Tingkat <b>melek huruf</b>, angka partisipasi sekolah, dan kualitas pendidikan.</li><li>Peningkatan akses dan kualitas pendidikan menjadi <b>prioritas</b>.</li><li>Bertujuan mengurangi kesenjangan dan meningkatkan kualitas tenaga kerja.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">04</div><div class="sa-title">Ketenagakerjaan</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Meliputi <b>tingkat pengangguran, tingkat partisipasi angkatan kerja, dan tingkat upah</b>.</li><li>Menurunkan pengangguran dan meningkatkan <b>kesempatan kerja layak dan produktif</b>.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">05</div><div class="sa-title">Taraf & Pola Konsumsi</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Mencakup <b>pendapatan per kapita, pola konsumsi, dan akses terhadap barang dan jasa</b>.</li><li>Pertumbuhan ekonomi <b>inklusif</b> dan peningkatan daya beli masyarakat berperan penting.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">06</div><div class="sa-title">Perumahan & Lingkungan</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Akses terhadap <b>perumahan layak, sanitasi, air bersih, dan lingkungan sehat</b>.</li><li>Penyediaan perumahan <b>terjangkau dan berkualitas</b> serta perlindungan lingkungan.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">07</div><div class="sa-title">Kemiskinan</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Mengukur jumlah penduduk yang hidup <b>di bawah garis kemiskinan</b>.</li><li>Melibatkan <b>program perlindungan sosial, pemberdayaan ekonomi, dan akses layanan dasar</b>.</li></ul></div></div></div><p class="sa-hint">Klik kartu untuk membuka penjelasan</p>` },
+
+  // 6. LIMA MODAL DASAR
+  { content: `<div class="slide-num">06 / Faktor</div><h2 class="slide-title">Lima modal dasar</h2><p class="slide-subtitle">Klik setiap modal untuk melihat penjelasan lengkapnya.</p><div class="slide-accordion"><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">01</div><div class="sa-title">Sumber Daya Manusia</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Faktor paling <b>fundamental</b> dalam pembangunan.</li><li>Tanpa manusia yang sehat, terdidik, dan terampil, pembangunan tidak akan berjalan optimal.</li><li>Investasi di bidang pendidikan dan kesehatan adalah investasi <b>jangka panjang</b>.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">02</div><div class="sa-title">Sumber Daya Alam</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Modal penting terutama bagi negara agraris seperti Indonesia.</li><li>Pengelolaannya harus <b>berkelanjutan</b> agar tidak habis di masa depan.</li><li>Harus tetap ramah lingkungan.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">03</div><div class="sa-title">Modal Finansial</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Memungkinkan seseorang memulai usaha, mengakses layanan, atau menghadapi kondisi darurat.</li><li>Akses ke lembaga keuangan penting agar masyarakat bisa mengembangkan diri.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">04</div><div class="sa-title">Infrastruktur</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Menghubungkan masyarakat dengan <b>layanan dasar dan pasar</b>.</li><li>Jalan baik, listrik stabil, sanitasi layak, dan transportasi yang memadai secara langsung meningkatkan kualitas hidup.</li></ul></div></div><div class="sa-item" onclick="toggleSlideCard(this)"><div class="sa-header"><div class="sa-num">05</div><div class="sa-title">Modal Sosial</div><div class="sa-icon"></div></div><div class="sa-body"><ul><li>Perekat masyarakat: <b>norma, nilai, saling percaya</b>, dan jaringan sosial.</li><li>Gotong royong dan jejaring sosial mempermudah kolaborasi untuk memecahkan masalah bersama.</li></ul></div></div></div><p class="sa-hint">Klik kartu untuk membuka penjelasan</p>` },
+
+  // 7. IPM
+  { content: `<div class="slide-num">07 / Data</div><h2 class="slide-title">IPM Indonesia terus naik</h2><p class="slide-subtitle">Indeks Pembangunan Manusia dari 2017 sampai 2021.</p><div class="slide-stats"><div class="slide-stat"><div class="sl">2017</div><div class="sv">70,8</div></div><div class="slide-stat"><div class="sl">2019</div><div class="sv">71,9</div></div><div class="slide-stat"><div class="sl">2021</div><div class="sv">72,3</div></div></div><p class="slide-subtitle" style="margin-top:32px;font-size:15px">Pandemi 2020 sempat membuat stagnasi (71,9), tapi 2021 mulai pulih. Sumber: BPS, 2022.</p>` },
+
+  // 8. HARAPAN HIDUP
+  { content: `<div class="slide-num">08 / Data</div><h2 class="slide-title">Harapan hidup juga meningkat</h2><p class="slide-subtitle">Angka Harapan Hidup dalam tahun, periode 2017 sampai 2021.</p><div class="slide-stats"><div class="slide-stat"><div class="sl">2017</div><div class="sv">72,9<span class="su">thn</span></div></div><div class="slide-stat"><div class="sl">2020</div><div class="sv">73,4<span class="su">thn</span></div></div><div class="slide-stat"><div class="sl">2021</div><div class="sv">73,6<span class="su">thn</span></div></div></div><p class="slide-subtitle" style="margin-top:32px;font-size:15px">Naik konsisten setiap tahun. Ini indikator bahwa kualitas kesehatan masyarakat membaik.</p>` },
+
+  // 9. TABLE RINGKASAN
+  { content: `<div class="slide-num">09 / Data</div><h2 class="slide-title">Ringkasan angka 2017-2021</h2><div style="margin-top:20px;border:1px solid rgba(255,255,255,.1);border-radius:8px;overflow:hidden;max-width:880px"><table class="slide-table"><thead><tr><th>Tahun</th><th>IPM</th><th>Perubahan</th><th>Harapan Hidup</th></tr></thead><tbody><tr><td>2017</td><td class="val">70,8</td><td class="flat">-</td><td>72,9 thn</td></tr><tr><td>2018</td><td class="val">71,4</td><td class="up">▲ 0,6</td><td>73,0 thn</td></tr><tr><td>2019</td><td class="val">71,9</td><td class="up">▲ 0,5</td><td>73,2 thn</td></tr><tr><td>2020</td><td class="val">71,9</td><td class="flat">- 0,0</td><td>73,4 thn</td></tr><tr><td>2021</td><td class="val">72,3</td><td class="up">▲ 0,4</td><td>73,6 thn</td></tr></tbody></table></div><p class="slide-subtitle" style="margin-top:20px;font-size:14px">PDB 2021 bergerak positif menjadi <b style="color:#4ade80">3,7%</b>, setelah 2020 di minus 2,1%. Pemulihan ekonomi pasca pandemi.</p>` },
+
+  // 10. GAME
+  { init: 'game', content: `<div class="slide-num">10 / Simulasi</div><h2 class="slide-title" style="font-size:clamp(22px,3vw,36px)">Coba jadi Menteri Perencanaan</h2><p class="slide-subtitle" style="font-size:15px;margin-bottom:0">Ini contoh alokasi yang buruk. Tugasmu memperbaikinya sampai skor naik. Total anggaran: 100 poin.</p><div class="slide-game"><div class="sg-sliders"><div class="sg-slider"><div class="sg-slider-head"><label>Pendidikan</label><span class="v" id="sgv-pendidikan">0</span></div><input type="range" id="sgp-pendidikan" min="0" max="100" value="0" oninput="updateSlideGame()"></div><div class="sg-slider"><div class="sg-slider-head"><label>Kesehatan</label><span class="v" id="sgv-kesehatan">0</span></div><input type="range" id="sgp-kesehatan" min="0" max="100" value="0" oninput="updateSlideGame()"></div><div class="sg-slider"><div class="sg-slider-head"><label>Ekonomi</label><span class="v" id="sgv-ekonomi">100</span></div><input type="range" id="sgp-ekonomi" min="0" max="100" value="100" oninput="updateSlideGame()"></div><div class="sg-slider"><div class="sg-slider-head"><label>Infrastruktur</label><span class="v" id="sgv-infrastruktur">0</span></div><input type="range" id="sgp-infrastruktur" min="0" max="100" value="0" oninput="updateSlideGame()"></div><div class="sg-slider" style="grid-column:1/-1"><div class="sg-slider-head"><label>Lingkungan</label><span class="v" id="sgv-lingkungan">0</span></div><input type="range" id="sgp-lingkungan" min="0" max="100" value="0" oninput="updateSlideGame()"></div></div><div class="sg-score"><div class="sg-score-left"><div class="lbl">Total Anggaran</div><div class="total"><b id="sgp-total">100</b> / 100</div></div><div class="sg-score-right bad" id="sgp-scoreRight"><div class="lbl">Indeks Kesejahteraan</div><div class="big" id="sgp-skor">0</div><div class="msg" id="sgp-pesan">Kurang sejahtera. Alokasi terlalu timpang.</div></div></div><div class="sg-tip"> </div><button class="sg-reset" onclick="resetSlideGame()">Reset ke alokasi awal</button></div>` },
+
+  // 11. QUIZ
+  { init: 'quiz', content: `<div class="slide-num">11 / Kuis</div><h2 class="slide-title" style="font-size:clamp(22px,3vw,36px)">Uji pemahamanmu</h2><p class="slide-subtitle" style="font-size:15px;margin-bottom:0">Lima pertanyaan pilihan ganda. Skor langsung keluar.</p><div class="slide-quiz" id="slideQuizBox"></div>` },
+
+  // 12. ANALISIS
+  { content: `<div class="slide-num">12 / Analisis</div><h2 class="slide-title">Mengapa ekonomi saja tidak cukup?</h2><p class="slide-subtitle">Pertumbuhan ekonomi hanya salah satu indikator kesejahteraan.</p><ul class="slide-list" style="margin-top:24px"><li>Jika pertumbuhan tidak merata, <b>kesenjangan justru melebar</b>.</li><li>Aspek non-ekonomi seperti kesehatan, pendidikan, lingkungan, dan rasa aman juga harus diperhatikan.</li><li>Kesejahteraan itu <b>multidimensi</b>, bukan sekadar angka PDB.</li><li>Kalau alokasi pembangunan berat di satu sektor, sektor lain tumbang dan kesenjangan makin lebar.</li></ul>` },
+
+  // 13. KESIMPULAN
+  { content: `<div class="slide-num">13 / Kesimpulan</div><h2 class="slide-title">Pesan utama</h2><div class="slide-grid" style="margin-top:24px"><div class="slide-card"><h3>Multidimensi</h3><p>Diukur dari sosial, ekonomi, kesehatan, dan lingkungan.</p></div><div class="slide-card"><h3>Inklusif & Berkelanjutan</h3><p>Pembangunan harus merata, tidak hanya di satu sektor.</p></div><div class="slide-card"><h3>Kolaboratif</h3><p>Butuh sinergi pemerintah, masyarakat, dan sektor swasta.</p></div><div class="slide-card"><h3>Tujuan Akhir</h3><p>Bukan angka, tapi kualitas hidup manusia.</p></div></div>` },
+
+  // 14. TERIMA KASIH
+  { content: `<div class="slide-cover"><div class="cover-tag">Terima kasih</div><h1 style="font-size:clamp(36px,6vw,72px)">Ada pertanyaan?</h1><p class="cover-sub">Silakan masuk ke sesi tanya jawab. Kami siap menjelaskan bagian mana pun yang masih kurang jelas.</p><div class="cover-meta">Kelompok 03 · Geografi XII IPS · 2024/2027</div></div>` }
+];
   let currentSlide = 0;
-  function renderSlide() {
-    const stage = document.getElementById('slideStage');
-    const s = slides[currentSlide];
-    stage.innerHTML = `<div class="slide-content">${s.content}</div>`;
-    document.getElementById('slideCounter').innerText = `${currentSlide + 1} / ${slides.length}`;
-    document.getElementById('slideProgress').style.width = ((currentSlide + 1) / slides.length * 100) + '%';
-    document.getElementById('slidePrev').disabled = currentSlide === 0;
-    document.getElementById('slideNext').disabled = currentSlide === slides.length - 1;
+// ===== SLIDE GAME =====
+function updateSlideGame() {
+  let total = 0, deviasi = 0;
+  ['pendidikan','kesehatan','ekonomi','infrastruktur','lingkungan'].forEach(id => {
+    const el = document.getElementById('sgp-' + id);
+    if (!el) return;
+    const val = parseInt(el.value);
+    total += val;
+    const vEl = document.getElementById('sgv-' + id);
+    vEl.innerText = val;
+    vEl.classList.toggle('ideal', val === 20);
+    deviasi += Math.abs(val - 20);
+  });
+
+  const totalEl = document.getElementById('sgp-total');
+  if (!totalEl) return;
+  totalEl.innerText = total;
+
+  const skorEl = document.getElementById('sgp-skor');
+  const msgEl = document.getElementById('sgp-pesan');
+  const scoreRight = document.getElementById('sgp-scoreRight');
+
+  let skor = 0, pesan = '', kelas = '';
+
+  if (total > 100) {
+    skor = 0;
+    pesan = 'Anggaran melebihi 100. Kurangi alokasi dulu.';
+    kelas = 'bad';
+  } else if (total === 0) {
+    skor = 0;
+    pesan = '🚨ANGGARANNYA JANGAN DI KORUPSI WOY!🚨';
+    kelas = 'bad corrupt';
+  } else {
+    const rasioTerpakai = total / 100;
+    const rasioPemerataan = Math.max(0, 100 - deviasi * 0.5) / 100;
+    skor = Math.round(rasioTerpakai * rasioPemerataan * 100);
+
+    if (skor >= 90) {
+      pesan = 'Alokasi ideal, masyarakat sangat sejahtera.';
+      kelas = 'good';
+    } else if (skor >= 70) {
+      pesan = 'Bagus, tapi masih ada sektor yang perlu diperhatikan.';
+      kelas = '';
+    } else if (skor >= 50) {
+      pesan = 'Cukup. Alokasi terlalu berat di beberapa sektor.';
+      kelas = 'warn';
+    } else {
+      pesan = 'Kurang sejahtera. Alokasi terlalu timpang.';
+      kelas = 'bad';
+    }
   }
+
+  skorEl.innerText = skor;
+  msgEl.innerText = pesan;
+  scoreRight.className = 'sg-score-right ' + kelas;
+}
+
+function resetSlideGame() {
+  ['pendidikan','kesehatan','ekonomi','infrastruktur','lingkungan'].forEach(id => {
+    const el = document.getElementById('sgp-' + id);
+    if (el) el.value = 0;
+  });
+  updateSlideGame();
+}
+// ===== SLIDE QUIZ =====
+let sqCurrent = 0, sqScore = 0, sqAnswered = false;
+
+function renderSlideQuiz() {
+  const box = document.getElementById('slideQuizBox');
+  if (!box) return;
+  if (sqCurrent >= quizData.length) { renderSlideQuizResult(); return; }
+  sqAnswered = false;
+  const q = quizData[sqCurrent];
+  box.innerHTML = `
+    <div class="sq-head">
+      <div class="sq-counter">Soal <b>${sqCurrent + 1}</b> / ${quizData.length}</div>
+      <div class="sq-score-mini">Skor: <b>${sqScore}</b>/${quizData.length}</div>
+    </div>
+    <div class="sq-question">${q.q}</div>
+    <div class="sq-options">
+      ${q.options.map((opt, i) => `
+        <button class="sq-option" onclick="answerSlideQuiz(${i})">
+          <span class="key">${String.fromCharCode(65 + i)}</span>
+          <span>${opt}</span>
+        </button>
+      `).join('')}
+    </div>
+    <div class="sq-feedback" id="sqFeedback"></div>
+    <div class="sq-actions">
+      <button class="sq-btn primary" id="sqNextBtn" onclick="nextSlideQuiz()" disabled>
+        ${sqCurrent === quizData.length - 1 ? 'Lihat hasil' : 'Soal berikutnya'}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  `;
+}
+
+function answerSlideQuiz(selected) {
+  if (sqAnswered) return;
+  sqAnswered = true;
+  const q = quizData[sqCurrent];
+  const box = document.getElementById('slideQuizBox');
+  const options = box.querySelectorAll('.sq-option');
+  options.forEach((opt, i) => {
+    opt.disabled = true;
+    if (i === q.correct) opt.classList.add('correct');
+    else if (i === selected) opt.classList.add('wrong');
+    else opt.classList.add('disabled-dim');
+  });
+  const isCorrect = selected === q.correct;
+  if (isCorrect) sqScore++;
+  const fb = document.getElementById('sqFeedback');
+  fb.className = 'sq-feedback show ' + (isCorrect ? 'correct' : 'wrong');
+  fb.innerHTML = `<b>${isCorrect ? '✓ Benar!' : '✕ Kurang tepat.'}</b> ${q.explain}`;
+  document.getElementById('sqNextBtn').disabled = false;
+  const sm = box.querySelector('.sq-score-mini b');
+  if (sm) sm.innerText = sqScore;
+}
+
+function nextSlideQuiz() {
+  sqCurrent++;
+  if (sqCurrent >= quizData.length) renderSlideQuizResult();
+  else renderSlideQuiz();
+}
+
+function renderSlideQuizResult() {
+  const box = document.getElementById('slideQuizBox');
+  const percent = Math.round((sqScore / quizData.length) * 100);
+  let verdict;
+  if (percent >= 80) verdict = 'Pemahamanmu sangat baik! Kamu siap sesi tanya jawab.';
+  else if (percent >= 60) verdict = 'Cukup baik. Coba tinjau kembali bagian yang masih ragu.';
+  else verdict = 'Masih perlu belajar lagi. Yuk baca ulang bagian indikator dan faktor.';
+  box.innerHTML = `
+    <div class="sq-result">
+      <h3>Kuis selesai</h3>
+      <div class="final">${sqScore}<span class="of"> / ${quizData.length}</span></div>
+      <div class="verdict">${verdict}</div>
+      <button class="sq-btn primary" onclick="restartSlideQuiz()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Coba lagi
+      </button>
+    </div>
+  `;
+}
+
+function restartSlideQuiz() {
+  sqCurrent = 0; sqScore = 0; sqAnswered = false;
+  renderSlideQuiz();
+}
+
+// ===== SLIDE ACCORDION TOGGLE =====
+function toggleSlideCard(el) {
+  const parent = el.parentElement;
+  const wasOpen = el.classList.contains('open');
+  // Close semua dulu (biar cuma 1 yang buka)
+  parent.querySelectorAll('.sa-item.open').forEach(item => item.classList.remove('open'));
+  // Baru buka yang dipencet (kalau sebelumnya belum kebuka)
+  if (!wasOpen) el.classList.add('open');
+}
+
+// ===== RENDER SLIDE =====
+function renderSlide() {
+  const stage = document.getElementById('slideStage');
+  const s = slides[currentSlide];
+  stage.innerHTML = `<div class="slide-content">${s.content}</div>`;
+  document.getElementById('slideCounter').innerText = `${currentSlide + 1} / ${slides.length}`;
+  document.getElementById('slideProgress').style.width = ((currentSlide + 1) / slides.length * 100) + '%';
+  document.getElementById('slidePrev').disabled = currentSlide === 0;
+  document.getElementById('slideNext').disabled = currentSlide === slides.length - 1;
+
+  // Auto-init interactive slides
+  setTimeout(() => {
+    if (s.init === 'game') resetSlideGame();
+    else if (s.init === 'quiz') { sqCurrent = 0; sqScore = 0; sqAnswered = false; renderSlideQuiz(); }
+  }, 60);
+}
   function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
   function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
   function enterSlideMode() {
@@ -1227,7 +1875,84 @@
       }
     }
   });
+  // ===== BAGIKAN =====
+function initShare() {
+  const url = window.location.origin + window.location.pathname;
+  const input = document.getElementById('shareLinkInput');
+  const qrImg = document.getElementById('qrImage');
+  if (!input || !qrImg) return;
 
+  input.value = url;
+
+  // Pakai qrserver API untuk generate QR (600x600, error correction H)
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(url)}&bgcolor=FFFFFF&color=111827&margin=20&qzone=2`;
+  qrImg.src = qrUrl;
+}
+
+async function copyShareLink() {
+  const input = document.getElementById('shareLinkInput');
+  const btn = document.getElementById('copyBtn');
+  if (!input || !btn) return;
+
+  try {
+    await navigator.clipboard.writeText(input.value);
+    btn.classList.add('copied');
+    btn.querySelector('span').innerText = 'Tersalin!';
+    showToast('Link berhasil disalin');
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.querySelector('span').innerText = 'Salin';
+    }, 2200);
+  } catch (err) {
+    // Fallback: pilih & copy manual
+    input.select();
+    input.setSelectionRange(0, 99999);
+    try {
+      document.execCommand('copy');
+      showToast('Link berhasil disalin');
+    } catch (e) {
+      showToast('Gagal salin. Copy manual aja ya.');
+    }
+  }
+}
+
+async function downloadQR() {
+  const qrImg = document.getElementById('qrImage');
+  if (!qrImg || !qrImg.src) return;
+
+  try {
+    const res = await fetch(qrImg.src, { mode: 'cors' });
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = 'qr-kesejahteraan.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl);
+    showToast('QR code berhasil di-download');
+  } catch (err) {
+    // Fallback: buka di tab baru biar user save manual
+    window.open(qrImg.src, '_blank');
+    showToast('Klik kanan > Save Image');
+  }
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('shareToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'shareToast';
+    toast.className = 'share-toast';
+    toast.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span></span>`;
+    document.body.appendChild(toast);
+  }
+  toast.querySelector('span').innerText = msg;
+  toast.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
   setTimeout(() => { initReveals(); updateGame(); }, 200);
 </script>
 
